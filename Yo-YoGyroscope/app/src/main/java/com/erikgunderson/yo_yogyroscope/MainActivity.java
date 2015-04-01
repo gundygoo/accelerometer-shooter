@@ -2,6 +2,8 @@ package com.erikgunderson.yo_yogyroscope;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,14 +12,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 
 public class MainActivity extends Activity implements SensorEventListener {
@@ -59,8 +56,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     }
 
-
-
     //Every time the sensor data changes updates the speed at which x and y are moved
     public void onSensorChanged(SensorEvent event){
 
@@ -96,8 +91,11 @@ public class MainActivity extends Activity implements SensorEventListener {
             Paint p = new Paint();
             p.setColor(Color.MAGENTA);
             size = 50;
+            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.daikatana);
+
             //draw a circle at the point designated based on accelerometer data and previous points with a specified size and a color P
-            canvas.drawCircle(x, y, size, p);
+            //canvas.drawCircle(x, y, size, p);
+            canvas.drawBitmap(bmp, x, y, p);
             //Move ball based on where ball is and accelerometer data
             x= (float) (-xPos*2 + x);
             y= (float) (yPos*2 + y);
