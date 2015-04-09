@@ -1,0 +1,48 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context=".MainMenu">
+
+    <com.example.student.mainmenu.Background
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title"
+            android:layout_gravity="center"
+            android:src="@drawable/title2"
+            />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/start"
+            android:layout_gravity="center"
+            android:src="@drawable/start"
+            android:background="@drawable/start"/>
+        <ImageButton
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/leaderboard"
+            android:layout_gravity="center"
+            android:src="@drawable/leaderboard"
+            android:background="@drawable/leaderboard"/>
+
+        <ImageButton
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/calibrate"
+            android:layout_gravity="center"
+            android:src="@drawable/calibrate"
+            android:background="@drawable/calibrate" />
+    </LinearLayout>
+
+
+</FrameLayout>
