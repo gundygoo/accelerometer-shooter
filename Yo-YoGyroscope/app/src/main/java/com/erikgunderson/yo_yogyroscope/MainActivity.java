@@ -91,11 +91,11 @@ public class MainActivity extends Activity implements SensorEventListener {
             Paint p = new Paint();
             p.setColor(Color.MAGENTA);
             size = 100;
-            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.daikatana);
+            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.player);
 
             //draw a circle at the point designated based on accelerometer data and previous points with a specified size and a color P
             //canvas.drawCircle(x, y, size, p);
-            canvas.drawBitmap(bmp, (float)yPos*100+width/2-25, height-50, p);
+            canvas.drawBitmap(bmp, (float)yPos*100+width/2-25, height-100, p);
             //Move ball based on where ball is and accelerometer data
             //x= (float) (-xPos*2 + x);
             //y= (float) (yPos*2 + y);
