@@ -58,17 +58,10 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     //Every time the sensor data changes updates the speed at which x and y are moved
     public void onSensorChanged(SensorEvent event){
-        xPos = event.values[0];
-        yPos = event.values[1];
 
-        if(y<yPos)
-        {
-            y+=0.1;
-        }
-        else if(y>yPos)
-        {
-            y-=0.1;
-        }
+            xPos = event.values[0];
+            yPos = event.values[1];
+
     }
 
     @Override
@@ -102,7 +95,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
             //draw a circle at the point designated based on accelerometer data and previous points with a specified size and a color P
             //canvas.drawCircle(x, y, size, p);
-            canvas.drawBitmap(bmp, (float)y*100+width/2-25, height-50, p);
+            canvas.drawBitmap(bmp, (float)yPos*100+width/2-25, height-50, p);
             //Move ball based on where ball is and accelerometer data
             //x= (float) (-xPos*2 + x);
             //y= (float) (yPos*2 + y);
