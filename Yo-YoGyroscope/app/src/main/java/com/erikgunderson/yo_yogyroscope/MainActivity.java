@@ -24,6 +24,10 @@ public class MainActivity extends Activity implements SensorEventListener {
     private Sensor mSensor;
     //Speed at which ball moves given by accelerometer data
     double xPos, yPos;
+    //Base Y Position
+    double neutralYPos = 0;
+    //Player Object
+    Player player;
     //Custom view
     MyDrawView myDrawing = null;
     //Size of screen
@@ -54,14 +58,19 @@ public class MainActivity extends Activity implements SensorEventListener {
         myDrawing = new MyDrawView(this);
         setContentView(myDrawing);
 
+        player = new Player();
+
     }
 
     //Every time the sensor data changes updates the speed at which x and y are moved
     public void onSensorChanged(SensorEvent event){
 
-            xPos = event.values[0];
-            yPos = event.values[1];
-
+        xPos = event.values[0];
+        yPos = event.values[1];
+        if(yPos > neutralYPos)  //TODO: Set up neutralYPos calibration
+        {
+            player.shoot();
+        }
     }
 
     @Override
@@ -89,13 +98,13 @@ public class MainActivity extends Activity implements SensorEventListener {
             width=canvas.getWidth();
             height=canvas.getHeight();
             Paint p = new Paint();
-            p.setColor(Color.MAGENTA);
-            size = 100;
-            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.player);
+            Player player = new Player();
+            Bitmap bmp = player.getImage();
+            //Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.player);
 
             //draw a circle at the point designated based on accelerometer data and previous points with a specified size and a color P
             //canvas.drawCircle(x, y, size, p);
-            canvas.drawBitmap(bmp, (float)yPos*100+width/2-25, height-100, p);
+            canvas.drawBitmap(player.getImage(), (float)yPos*100+width/2-25, height-100, p);
             //Move ball based on where ball is and accelerometer data
             //x= (float) (-xPos*2 + x);
             //y= (float) (yPos*2 + y);
