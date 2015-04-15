@@ -13,6 +13,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 
@@ -27,11 +28,11 @@ public class MainActivity extends Activity implements SensorEventListener {
     //Custom view
     MyDrawView myDrawing = null;
     //Size of screen
-    int width;
+    int width = 0;
     int height;
     //Starting position and keeps track of where ball is currently
-    float x=100;
-    float y=100;
+    float x=0;
+    float y=0;
     //Size of ball
     int size;
 
@@ -62,6 +63,14 @@ public class MainActivity extends Activity implements SensorEventListener {
             xPos = event.values[0];
             yPos = event.values[1];
 
+        if(x<xPos*100)
+        {
+            x+=50;
+        }
+        else if(x>xPos*100)
+        {
+            x-=50;
+        }
     }
 
     @Override
@@ -86,8 +95,12 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         public void onDraw(Canvas canvas) {
             //Create a new paint color for the circle drawn later
-            width=canvas.getWidth();
-            height=canvas.getHeight();
+            if(width == 0) {
+                width=canvas.getWidth();
+                height=canvas.getHeight();
+                x = width/2;
+                Log.i("Arrived", String.valueOf(x));
+            }
             Paint p = new Paint();
             p.setColor(Color.MAGENTA);
             size = 100;
@@ -95,7 +108,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
             //draw a circle at the point designated based on accelerometer data and previous points with a specified size and a color P
             //canvas.drawCircle(x, y, size, p);
-            canvas.drawBitmap(bmp, (float)yPos*100+width/2-25, height-50, p);
+            canvas.drawBitmap(bmp, (float)-x+width/2-25, height-50, p);
             //Move ball based on where ball is and accelerometer data
             //x= (float) (-xPos*2 + x);
             //y= (float) (yPos*2 + y);
