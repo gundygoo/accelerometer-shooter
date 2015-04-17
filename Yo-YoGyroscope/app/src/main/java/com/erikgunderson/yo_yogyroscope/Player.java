@@ -5,18 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 /**
- * Created by student on 4/10/2015.
+ * Created by Steven on 4/10/2015.
  */
 public class Player extends Sprite{
 
+    private boolean shield = false;
     private int score;
     private int health;
     private int lives;
-    private int x;
-    private int y;
     private int width = 106;
     private int height = 130;
-    private Bitmap image;
 
     void Player()
     {
@@ -30,5 +28,9 @@ public class Player extends Sprite{
     public void shoot()
     {
         //TODO: create projectile
+    }
+    public void shield()
+    {
+        //TODO: turn on shield
     }
 }

@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 /**
- * Created by student on 4/10/2015.
+ * Created by Steven on 4/10/2015.
  */
 public class Sprite {
 
@@ -20,6 +20,39 @@ public class Sprite {
         this.y = y;
         this.width = width;
         this.height = height;
+    }
+
+    public boolean intersects(Sprite otherSprite)
+    {
+        //The left wall of this sprite is within the othersprite's x axis
+        if(otherSprite.getX()+otherSprite.getWidth() >= this.getX() && this.getX() >= otherSprite.getX())
+        {
+            //The bottom of this sprite is within the y axis of the othersprite
+            if(otherSprite.getY()+otherSprite.getHeight() >= this.getY() && this.getY() >= otherSprite.getY())
+            {
+                return true;
+            }
+            //The bottom of the other sprite is within the y axis of this sprite
+            if(this.getY()+this.getHeight() >= otherSprite.getY() && otherSprite.getY() >= this.getY())
+            {
+                return true;
+            }
+        }
+        //The right wall of this sprite is within the othersprite's x axis
+        if(this.getX()+this.getWidth() >= otherSprite.getX() && otherSprite.getX() >= this.getX())
+        {
+            //The bottom of this sprite is within the y axis of the othersprite
+            if(otherSprite.getY()+otherSprite.getHeight() >= this.getY() && this.getY() >= otherSprite.getY())
+            {
+                return true;
+            }
+            //The bottom of the other sprite is within the y axis of this sprite
+            if(this.getY()+this.getHeight() >= otherSprite.getY() && otherSprite.getY() >= this.getY())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void setImage(Bitmap newImage)
@@ -50,5 +83,15 @@ public class Sprite {
     public void setY(int y)
     {
         this.y = y;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public int getHeight()
+    {
+        return height;
     }
 }
