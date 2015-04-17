@@ -28,7 +28,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     //Base Y Position
     double neutralYPos = 0;
     //Player Object
-    Player player;
+    Player playerP;
     //Custom view
     MyDrawView myDrawing = null;
     //Size of screen
@@ -39,6 +39,8 @@ public class MainActivity extends Activity implements SensorEventListener {
     float y=0;
     //Size of ball
     int size;
+    Paint p;
+    Bitmap player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,39 +60,34 @@ public class MainActivity extends Activity implements SensorEventListener {
         //Make the content view the custom view created above.
         myDrawing = new MyDrawView(this);
         setContentView(myDrawing);
+        playerP = new Player();
+        player = BitmapFactory.decodeResource(getResources(), R.mipmap.player);
+        p = new Paint();
 
-        player = new Player();
 
     }
 
     //Every time the sensor data changes updates the speed at which x and y are moved
-    public void onSensorChanged(SensorEvent event){
+    public void onSensorChanged(SensorEvent event) {
 
-<<<<<<< HEAD
-            xPos = event.values[0];
-            yPos = event.values[1];
-
-        if(x<xPos*100)
-        {
-            x+=50;
-        }
-        else if(x>xPos*100)
-        {
-            x-=50;
-=======
         xPos = event.values[0];
         yPos = event.values[1];
-        if(yPos > neutralYPos)  //TODO: Set up neutralYPos calibration
+
+        if (x < xPos * 100) {
+            x += 50;
+        } else if (x > xPos * 100) {
+            x -= 50;
+        }
+        /*if (yPos > neutralYPos)  //TODO: Set up neutralYPos calibration
         {
             player.shoot();
->>>>>>> origin/master
-        }
+        }*/
     }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    public void onAccuracyChanged(Sensor sensor, int accuracy){
 
     }
+
     //Stops listening for accelerometer data when app is paused
     public void onPause() {
         super.onPause();
@@ -115,18 +112,15 @@ public class MainActivity extends Activity implements SensorEventListener {
                 x = width/2;
                 Log.i("Arrived", String.valueOf(x));
             }
-            Paint p = new Paint();
-            Player player = new Player();
-            Bitmap bmp = player.getImage();
-            //Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.player);
+
+            //Bitmap bmp = player.getImage();
+
+            canvas.drawBitmap(player, (-x+width/2-25), height, p);
 
             //draw a circle at the point designated based on accelerometer data and previous points with a specified size and a color P
             //canvas.drawCircle(x, y, size, p);
-<<<<<<< HEAD
-            canvas.drawBitmap(bmp, (float)-x+width/2-25, height-50, p);
-=======
-            canvas.drawBitmap(player.getImage(), (float)yPos*100+width/2-25, height-100, p);
->>>>>>> origin/master
+
+            //canvas.drawBitmap(player.getImage(), (float)yPos*100+width/2-25, height-100, p);
             //Move ball based on where ball is and accelerometer data
             //x= (float) (-xPos*2 + x);
             //y= (float) (yPos*2 + y);
