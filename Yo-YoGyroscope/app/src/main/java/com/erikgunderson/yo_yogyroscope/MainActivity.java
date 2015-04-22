@@ -73,7 +73,7 @@ public class MainActivity extends Activity implements SensorEventListener {
         xPos = event.values[0];
         yPos = event.values[1];
 
-        if (x < xPos * 100) {
+        /*if (x < xPos * 100) {
             x += 50;
         } else if (x > xPos * 100) {
             x -= 50;
@@ -112,17 +112,18 @@ public class MainActivity extends Activity implements SensorEventListener {
                 x = width/2;
                 Log.i("Arrived", String.valueOf(x));
             }
-
             //Bitmap bmp = player.getImage();
 
-            canvas.drawBitmap(player, (-x+width/2-25), height, p);
+            canvas.drawBitmap(player, (-x+width), height-250, p);
+            //change log:
+            //removed"-25+ from the width draw
 
             //draw a circle at the point designated based on accelerometer data and previous points with a specified size and a color P
             //canvas.drawCircle(x, y, size, p);
 
             //canvas.drawBitmap(player.getImage(), (float)yPos*100+width/2-25, height-100, p);
             //Move ball based on where ball is and accelerometer data
-            //x= (float) (-xPos*2 + x);
+            x= (float) (xPos*2 + x);
             //y= (float) (yPos*2 + y);
 
             //Log.i("xPos", String.valueOf(xPos));
@@ -177,7 +178,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     //Checks right of screen collision or if ball goes past
     private boolean rightCollision(float x)
     {
-        if(x+size>=width)
+        if(x>=width)
         {
             return true;
         }
