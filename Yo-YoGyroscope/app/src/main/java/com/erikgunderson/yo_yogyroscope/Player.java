@@ -13,12 +13,10 @@ public class Player extends Sprite{
     private int score;
     private int health;
     private int lives;
-    private int width = 106;
-    private int height = 130;
 
-    void Player()
+    Player()
     {
-        super.Sprite(0, 0, width, height);
+        super(0, 0, 106, 130);
         super.setImage(BitmapFactory.decodeResource(Resources.getSystem(), R.mipmap.player));
         lives = 4;
         score = 0;

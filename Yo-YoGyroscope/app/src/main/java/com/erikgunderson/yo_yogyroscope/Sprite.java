@@ -14,12 +14,30 @@ public class Sprite {
     private int height;
     private Bitmap image;
 
-    void Sprite(int x, int y, int width, int height)
+    Sprite(int x, int y, int width, int height)
     {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+    }
+
+    public void move(String axis, int distance)
+    {
+        if(axis == "x" || axis == "X")
+        {
+            this.x += distance;
+        }
+        if(axis == "y" || axis == "Y")
+        {
+            this.y += distance;
+        }
+    }
+
+    public void setLocation(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
     }
 
     public boolean intersects(Sprite otherSprite)

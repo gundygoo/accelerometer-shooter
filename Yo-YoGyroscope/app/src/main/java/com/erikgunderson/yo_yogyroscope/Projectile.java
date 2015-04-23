@@ -10,11 +10,11 @@ public class Projectile extends Sprite {
 
     boolean hitEnemy;
 
-    void Projectile(int x, int y, String name, boolean hitEnemy)
+    Projectile(int x, int y, String name, boolean hitEnemy)
     {
+        super(x,y,10,42);
         if(name == "bullet")
         {
-            super.Sprite(x,y,10,42);
             super.setImage(BitmapFactory.decodeResource(Resources.getSystem(), R.mipmap.bullet));
         }
         this.hitEnemy = hitEnemy;
