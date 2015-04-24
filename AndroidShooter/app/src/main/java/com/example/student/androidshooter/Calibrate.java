@@ -44,7 +44,7 @@ public class Calibrate extends Activity implements View.OnClickListener, SensorE
     //Every time the sensor data changes updates the speed at which x and y are moved
     public void onSensorChanged(SensorEvent event){
         currentTilt=event.values[1];
-        Log.d("Calibrate", Float.toString(currentTilt));
+       // Log.d("Calibrate", Float.toString(currentTilt));
     }
 
     @Override
