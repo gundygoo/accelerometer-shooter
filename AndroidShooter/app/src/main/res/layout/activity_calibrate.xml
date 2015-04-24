@@ -1,0 +1,41 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.student.mainmenu.Calibrate">
+    <com.example.student.androidshooter.Background
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/calibrateinstructions"/>
+
+        <ImageButton
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/calibrate2"
+            android:layout_gravity="center"
+            android:background="@drawable/calibrate"
+            android:src="@drawable/calibrate"/>
+        <ImageButton
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mainmenu"
+            android:layout_gravity="center"
+            android:background="@drawable/mainmenu"
+            android:src="@drawable/mainmenu"/>
+
+    </LinearLayout>
+
+</FrameLayout>
