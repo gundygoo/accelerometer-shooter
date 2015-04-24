@@ -2,110 +2,104 @@ package com.example.student.mainmenu;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Random;
 
 
-public class MainMenu extends Activity {
-    //boolean appStarted = false;
-    //Circle[] stars = new Circle[20];
-    Background b = null;
+public class MainMenu extends Activity implements View.OnClickListener {
+    ImageButton start;
+    ImageButton calibrate;
+    ImageButton leaderboard;
+    ImageButton instructions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        b = new Background(this);
         setContentView(R.layout.activity_main_menu);
-        //setContentView(b);
-    }
-    /*public class Background extends View
-    {
-        public Background(Context mContext)
+        Log.d("Main Menu", "Activity Started");
+        start= (ImageButton) findViewById(R.id.start);
+        start.setOnClickListener(this);
+        calibrate= (ImageButton) findViewById(R.id.calibrate);
+        calibrate.setOnClickListener(this);
+        leaderboard= (ImageButton) findViewById(R.id.leaderboard);
+        leaderboard.setOnClickListener(this);
+        instructions= (ImageButton) findViewById(R.id.instructions);
+        instructions.setOnClickListener(this);
+        File file = new File("angle");
+        if(file.length()<=0)
         {
-            super(mContext);
-        }
-        public Background(Context context, AttributeSet attrs) {super(context, attrs);}
-        public void onDraw(Canvas canvas)
-        {
-            canvas.drawColor(Color.BLACK);
-            if(!appStarted)
-            {
-                for (int i = 0; i < 20; i++)
-                {
-                    //Create star and random location within canvas of size 10 put in stars array
-                    stars[i]= new Circle(randInt(5, canvas.getWidth()-5),randInt(5,canvas.getHeight()-5),5);
-                }
-                appStarted=true;
+            try {
+                String normalTilt = "6.7";
+                FileOutputStream fos = openFileOutput("angle", Context.MODE_PRIVATE);
+                fos.write(normalTilt.getBytes());
+                fos.close();
             }
-            Paint p = new Paint();
-            p.setColor(Color.YELLOW);
-            for(int i =0; i<20; i++)
+            catch (Exception e)
             {
-                canvas.drawCircle(stars[i].getX(),stars[i].getY(),stars[i].getRadius(),p);
-                stars[i].moveDown();
-                if(stars[i].getY()>canvas.getHeight()+5)
-                {
-                    stars[i].setY(-5);
-                }
+
             }
-            invalidate();
         }
 
+
+
     }
-    public class Circle
+    @Override
+    public void onClick(View v)
     {
-        private int x;
-        private int y;
-        private int radius;
+        if(v.getId()==R.id.start)
+        {
+            try {
+                BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+                        openFileInput("angle")));
+                String inputString;
+                StringBuffer stringBuffer = new StringBuffer();
+                while ((inputString = inputReader.readLine()) != null) {
+                    stringBuffer.append(inputString + "\n");
+                }
+                Log.d("Angle", stringBuffer.toString());
+                //lblTextViewOne.setText(stringBuffer.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //Log.d("Main Menu", tiltString);
 
-        public Circle(int x, int y, int radius)
-        {
-            this.x=x;
-            this.y=y;
-            this.radius=radius;
         }
-        public void setX(int x)
+        if(v.getId()==R.id.leaderboard)
         {
-            this.x=x;
+            Log.d("Main Menu", "Leaderboard was clicked");
         }
-        public void setY(int y)
+        if(v.getId()==R.id.calibrate)
         {
-            this.y=y;
+            Log.d("Main Menu", "Calibrate was clicked");
+            Intent intent = new Intent(getApplicationContext(), Calibrate.class);
+            startActivityForResult(intent, 0);
         }
-        public int getX()
+        if(v.getId()==R.id.instructions)
         {
-            return x;
+            Log.d("Main Menu", "Instructions was clicked");
+            Intent intent = new Intent(getApplicationContext(), Instructions.class);
+            startActivityForResult(intent, 0);
         }
-        public int getY()
-        {
-            return y;
-        }
-        public int getRadius()
-        {
-            return radius;
-        }
-        public void moveDown()
-        {
-            y=y+5;
-        }
-
-
     }
-    public static int randInt(int min, int max) {
-
-        Random rand = new Random();
-
-        int randomNum = rand.nextInt((max - min) + 1) + min;
-
-        return randomNum;
-    }*/
 }
 

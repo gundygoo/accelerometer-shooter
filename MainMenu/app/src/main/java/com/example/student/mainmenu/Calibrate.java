@@ -1,39 +1,97 @@
 package com.example.student.mainmenu;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 
-public class Calibrate extends ActionBarActivity {
-
+public class Calibrate extends Activity implements View.OnClickListener, SensorEventListener  {
+    private ImageButton calibrate;
+    private ImageButton mainMenu;
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+    private float currentTilt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate);
+        calibrate = (ImageButton) findViewById(R.id.calibrate2);
+        calibrate.setOnClickListener(this);
+        mainMenu = (ImageButton) findViewById(R.id.mainmenu);
+        mainMenu.setOnClickListener(this);
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
+    }
+    //Every time the sensor data changes updates the speed at which x and y are moved
+    public void onSensorChanged(SensorEvent event){
+        currentTilt=event.values[1];
+        Log.d("Calibrate", Float.toString(currentTilt));
     }
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_calibrate, menu);
-        return true;
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
-
+    //Stops listening for accelerometer data when app is paused
+    public void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(this);
+    }
+    //Resumes listening to accelerometer data when app is brought out of paused state
+    public void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
+    }
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void onClick(View v)
+    {
+        if(v.getId()==R.id.calibrate2)
+        {
+            Context context = getApplicationContext();
+            CharSequence text = "";
+            int duration = Toast.LENGTH_SHORT;
+            String FILENAME = "angle";
+            String string = currentTilt + "";
+            try {
+                FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                fos.write(string.getBytes());
+                fos.close();
+            }
+            catch (Exception e)
+            {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+                text = "An Error Occurred!";
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+            text = "Angle Calibrated!";
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
-
-        return super.onOptionsItemSelected(item);
+        if(v.getId()==R.id.mainmenu)
+        {
+            Intent i = getIntent();
+            setResult(Activity.RESULT_OK, i);
+            finish();
+        }
     }
+
 }
