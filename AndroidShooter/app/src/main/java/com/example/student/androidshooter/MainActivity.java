@@ -17,6 +17,12 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 
 public class MainActivity extends Activity implements SensorEventListener {
     //Keeps track of all the different sensors we have
@@ -26,7 +32,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     //Speed at which ball moves given by accelerometer data
     double xPos, yPos;
     //Base Y Position
-    double neutralYPos = 0;
+    double neutralYPos;
     //Player Object
     Player playerP;
     //Custom view
@@ -41,6 +47,8 @@ public class MainActivity extends Activity implements SensorEventListener {
     int size;
     Paint p;
     Bitmap player;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +72,22 @@ public class MainActivity extends Activity implements SensorEventListener {
         player = BitmapFactory.decodeResource(getResources(), R.mipmap.player);
         p = new Paint();
 
+        //set up file reader to get the neutralypos from calibrate activity
+        try {
+            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+                    openFileInput("angle")));
+            String inputString;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((inputString = inputReader.readLine()) != null) {
+                stringBuffer.append(inputString + "\n");
+            }
+            neutralYPos =Double.valueOf(String.valueOf(stringBuffer));
+            Log.i("angle", String.valueOf(neutralYPos));
+            //lblTextViewOne.setText(stringBuffer.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -73,15 +97,10 @@ public class MainActivity extends Activity implements SensorEventListener {
         xPos = event.values[0];
         yPos = event.values[1];
 
-        /*if (x < xPos * 100) {
-            x += 50;
-        } else if (x > xPos * 100) {
-            x -= 50;
-        }
-        /*if (yPos > neutralYPos)  //TODO: Set up neutralYPos calibration
+        if (yPos > neutralYPos)  //TODO: Set up neutralYPos calibration
         {
-            player.shoot();
-        }*/
+            //player.shoot();
+        }
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy){
@@ -178,7 +197,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     //Checks right of screen collision or if ball goes past
     private boolean rightCollision(float x)
     {
-        if(x>=width)
+        if(x+size>=width)
         {
             return true;
         }
