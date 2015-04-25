@@ -30,10 +30,24 @@
         android:layout_marginTop="15dp"
         android:layout_gravity="left|top"
         android:background="@drawable/backwardarrow"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/movementinstructions"
+        android:layout_gravity="center|center"/>
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="center"></RelativeLayout>
+        android:layout_gravity="center|bottom">
+
+        <view
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            class="com.example.student.androidshooter.MovementInstructions"
+            android:id="@+id/view"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 
 </FrameLayout>
