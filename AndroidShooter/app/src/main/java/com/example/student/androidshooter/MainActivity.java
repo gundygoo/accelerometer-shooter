@@ -57,14 +57,6 @@ public class MainActivity extends Activity implements SensorEventListener {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
-        //Gets the current display
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        //Gets the size of the screen in x and y values
-        display.getSize(size);
-        //Stores size of screen in width and height variables
-        //width = size.x;
-        //height = size.y;
         //Make the content view the custom view created above.
         myDrawing = new MyDrawView(this);
         setContentView(myDrawing);
@@ -83,7 +75,6 @@ public class MainActivity extends Activity implements SensorEventListener {
             }
             neutralYPos =Double.valueOf(String.valueOf(stringBuffer));
             Log.i("angle", String.valueOf(neutralYPos));
-            //lblTextViewOne.setText(stringBuffer.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
