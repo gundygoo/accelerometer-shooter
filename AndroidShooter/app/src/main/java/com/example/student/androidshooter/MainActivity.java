@@ -40,13 +40,9 @@ public class MainActivity extends Activity implements SensorEventListener {
     //Speed at which ball moves given by accelerometer data
     double xPos, yPos;
     //Base Y Position
-<<<<<<< HEAD
     double neutralYPos = 6.7f;
-=======
-    double neutralYPos;
     //Player Object
     Player playerP;
->>>>>>> origin/master
     //Custom view
     MyDrawView myDrawing = null;
     //Size of screen
@@ -70,17 +66,6 @@ public class MainActivity extends Activity implements SensorEventListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            FileReader fileReader = new FileReader("angle");
-            neutralYPos = Float.valueOf(fileReader.toString());
-            fileReader.close();
-        }
-        catch (Exception e)
-        {
-            String text = "Failed to load calibration file.";
-            Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
-            toast.show();
-        }
         //Set up Shield Image
         shieldImg = BitmapFactory.decodeResource(getResources(), R.drawable.shield);
         //Setting up ArrayLists
@@ -96,8 +81,6 @@ public class MainActivity extends Activity implements SensorEventListener {
         player = new Player(this.getApplicationContext());
         enemies.add(new Enemy(this.getApplicationContext(), 20, height));
         p = new Paint();
-<<<<<<< HEAD
-=======
 
         //set up file reader to get the neutralypos from calibrate activity
         try {
@@ -113,9 +96,6 @@ public class MainActivity extends Activity implements SensorEventListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
->>>>>>> origin/master
     }
 
     //Every time the sensor data changes updates the speed at which x and y are moved
@@ -123,7 +103,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         xPos = event.values[0];
         yPos = event.values[1];
-<<<<<<< HEAD
         if (yPos <= neutralYPos)
         {
             player.setShield(false);
@@ -131,12 +110,6 @@ public class MainActivity extends Activity implements SensorEventListener {
         if (yPos > neutralYPos)
         {
             player.setShield(true);
-=======
-
-        if (yPos > neutralYPos)  //TODO: Set up neutralYPos calibration
-        {
-            //player.shoot();
->>>>>>> origin/master
         }
     }
 

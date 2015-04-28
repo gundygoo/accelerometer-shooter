@@ -44,11 +44,11 @@ public class ShootingInstructions extends View implements SensorEventListener
     {
         super(mContext);
         this.mContext = mContext;
-        player = BitmapFactory.decodeResource(getResources(), R.mipmap.player);
+        player = BitmapFactory.decodeResource(getResources(), R.drawable.player);
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
-        playerP = new Player();
+        playerP = new Player(mContext);
         neutralyPos=getCurrentNeutralYPos();
     }
     //Constructor with attributes
@@ -56,11 +56,11 @@ public class ShootingInstructions extends View implements SensorEventListener
     {
         super(context, attrs);
         mContext = context;
-        player = BitmapFactory.decodeResource(getResources(), R.mipmap.player);
+        player = BitmapFactory.decodeResource(getResources(), R.drawable.player);
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
-        playerP = new Player();
+        playerP = new Player(mContext);
         neutralyPos=getCurrentNeutralYPos();
     }
     //Drawing a view with a ship that shoots but does not move todo: get rid of movability and add ability to shoot

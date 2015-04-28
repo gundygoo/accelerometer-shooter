@@ -40,22 +40,22 @@ public class MovementInstructions extends View implements SensorEventListener
     {
         super(mContext);
         this.mContext = mContext;
-        player = BitmapFactory.decodeResource(getResources(), R.mipmap.player);
+        player = BitmapFactory.decodeResource(getResources(), R.drawable.player);
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
-        playerP = new Player();
+        playerP = new Player(mContext);
     }
     //Constructor with attributes
     public MovementInstructions(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         mContext = context;
-        player = BitmapFactory.decodeResource(getResources(), R.mipmap.player);
+        player = BitmapFactory.decodeResource(getResources(), R.drawable.player);
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
-        playerP = new Player();
+        playerP = new Player(mContext);
     }
 
     public void onDraw(Canvas canvas)
