@@ -44,7 +44,7 @@ public class Calibrate extends Activity implements View.OnClickListener, SensorE
     //Every time the sensor data changes updates the speed at which x and y are moved
     public void onSensorChanged(SensorEvent event){
         currentTilt=event.values[1];
-        Log.d("Calibrate", Float.toString(currentTilt));
+       // Log.d("Calibrate", Float.toString(currentTilt));
     }
 
     @Override
@@ -64,6 +64,7 @@ public class Calibrate extends Activity implements View.OnClickListener, SensorE
     @Override
     public void onClick(View v)
     {
+        //When calibrate is clicked, sends the app data to a file named "angle" viewable througout the app
         if(v.getId()==R.id.calibrate2)
         {
             Context context = getApplicationContext();
@@ -80,7 +81,6 @@ public class Calibrate extends Activity implements View.OnClickListener, SensorE
             {
 
                 text = "An Error Occurred!";
-
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
             }
@@ -88,6 +88,7 @@ public class Calibrate extends Activity implements View.OnClickListener, SensorE
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
+        //Return to main menu and end the intent that took us here
         if(v.getId()==R.id.mainmenu)
         {
             Intent i = getIntent();

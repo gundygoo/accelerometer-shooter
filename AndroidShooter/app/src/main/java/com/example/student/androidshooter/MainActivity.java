@@ -25,6 +25,12 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Random;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 
 public class MainActivity extends Activity implements SensorEventListener {
     //Keeps track of all the different sensors we have
@@ -34,7 +40,13 @@ public class MainActivity extends Activity implements SensorEventListener {
     //Speed at which ball moves given by accelerometer data
     double xPos, yPos;
     //Base Y Position
+<<<<<<< HEAD
     double neutralYPos = 6.7f;
+=======
+    double neutralYPos;
+    //Player Object
+    Player playerP;
+>>>>>>> origin/master
     //Custom view
     MyDrawView myDrawing = null;
     //Size of screen
@@ -52,6 +64,8 @@ public class MainActivity extends Activity implements SensorEventListener {
     private int shootingFrames = 0;
     private int enemySpawnFrames = 0;
     private Bitmap shieldImg;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,20 +90,32 @@ public class MainActivity extends Activity implements SensorEventListener {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
-        //Gets the current display
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        //Gets the size of the screen in x and y values
-        display.getSize(size);
-        //Stores size of screen in width and height variables
-        //width = size.x;
-        //height = size.y;
         //Make the content view the custom view created above.
         myDrawing = new MyDrawView(this);
         setContentView(myDrawing);
         player = new Player(this.getApplicationContext());
         enemies.add(new Enemy(this.getApplicationContext(), 20, height));
         p = new Paint();
+<<<<<<< HEAD
+=======
+
+        //set up file reader to get the neutralypos from calibrate activity
+        try {
+            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+                    openFileInput("angle")));
+            String inputString;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((inputString = inputReader.readLine()) != null) {
+                stringBuffer.append(inputString + "\n");
+            }
+            neutralYPos =Double.valueOf(String.valueOf(stringBuffer));
+            Log.i("angle", String.valueOf(neutralYPos));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+>>>>>>> origin/master
     }
 
     //Every time the sensor data changes updates the speed at which x and y are moved
@@ -97,6 +123,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         xPos = event.values[0];
         yPos = event.values[1];
+<<<<<<< HEAD
         if (yPos <= neutralYPos)
         {
             player.setShield(false);
@@ -104,6 +131,12 @@ public class MainActivity extends Activity implements SensorEventListener {
         if (yPos > neutralYPos)
         {
             player.setShield(true);
+=======
+
+        if (yPos > neutralYPos)  //TODO: Set up neutralYPos calibration
+        {
+            //player.shoot();
+>>>>>>> origin/master
         }
     }
 
@@ -309,7 +342,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     //Checks right of screen collision or if ball goes past
     private boolean rightCollision(float x)
     {
-        if(x>=width)
+        if(x+size>=width)
         {
             return true;
         }

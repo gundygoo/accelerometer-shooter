@@ -19,15 +19,24 @@
         </activity>
         <activity
             android:name=".Calibrate"
-            android:label="@string/title_activity_calibrate" >
+            android:label="@string/title_activity_calibrate"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            >
         </activity>
         <activity
             android:name=".Instructions"
-            android:label="@string/title_activity_instructions" >
+            android:label="@string/title_activity_instructions"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            >
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_mainactivity" >
+            android:label="@string/title_activity_mainactivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            >
         </activity>
     </application>
 
