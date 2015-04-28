@@ -1,7 +1,9 @@
 package com.example.student.androidshooter;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -16,6 +18,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.widget.Toast;
+
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Random;
 
 
 public class MainActivity extends Activity implements SensorEventListener {
@@ -26,9 +34,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     //Speed at which ball moves given by accelerometer data
     double xPos, yPos;
     //Base Y Position
-    double neutralYPos = 0;
-    //Player Object
-    Player playerP;
+    double neutralYPos = 6.7f;
     //Custom view
     MyDrawView myDrawing = null;
     //Size of screen
@@ -40,11 +46,32 @@ public class MainActivity extends Activity implements SensorEventListener {
     //Size of ball
     int size;
     Paint p;
-    Bitmap player;
+    Player player;
+    private ArrayList<Enemy> enemies;
+    private ArrayList<Projectile> projectiles;
+    private int shootingFrames = 0;
+    private int enemySpawnFrames = 0;
+    private Bitmap shieldImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            FileReader fileReader = new FileReader("angle");
+            neutralYPos = Float.valueOf(fileReader.toString());
+            fileReader.close();
+        }
+        catch (Exception e)
+        {
+            String text = "Failed to load calibration file.";
+            Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        //Set up Shield Image
+        shieldImg = BitmapFactory.decodeResource(getResources(), R.drawable.shield);
+        //Setting up ArrayLists
+        enemies = new ArrayList<Enemy>();
+        projectiles = new ArrayList<Projectile>();
         //Setting up sensor to listen to accelerometer
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -60,11 +87,9 @@ public class MainActivity extends Activity implements SensorEventListener {
         //Make the content view the custom view created above.
         myDrawing = new MyDrawView(this);
         setContentView(myDrawing);
-        playerP = new Player();
-        player = BitmapFactory.decodeResource(getResources(), R.mipmap.player);
+        player = new Player(this.getApplicationContext());
+        enemies.add(new Enemy(this.getApplicationContext(), 20, height));
         p = new Paint();
-
-
     }
 
     //Every time the sensor data changes updates the speed at which x and y are moved
@@ -72,16 +97,14 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         xPos = event.values[0];
         yPos = event.values[1];
-
-        /*if (x < xPos * 100) {
-            x += 50;
-        } else if (x > xPos * 100) {
-            x -= 50;
-        }
-        /*if (yPos > neutralYPos)  //TODO: Set up neutralYPos calibration
+        if (yPos <= neutralYPos)
         {
-            player.shoot();
-        }*/
+            player.setShield(false);
+        }
+        if (yPos > neutralYPos)
+        {
+            player.setShield(true);
+        }
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy){
@@ -105,16 +128,115 @@ public class MainActivity extends Activity implements SensorEventListener {
         }
 
         public void onDraw(Canvas canvas) {
-            //Create a new paint color for the circle drawn later
+            shootingFrames++;
+            if(shootingFrames > 30 && !player.getShield())
+            {
+                player.shoot(projectiles);
+                shootingFrames = 0;
+            }
+            //Spawn enemies at a random but steady pace
+            enemySpawnFrames++;
+            if(enemySpawnFrames > new Random().nextInt(100)+50)
+            {
+                Enemy e1 = new Enemy(getContext(), new Random().nextInt(width-328), -20);
+                enemies.add(e1);
+                for(int i = 0; i < enemies.size()-1; i++)
+                {
+                    if(e1.intersects(enemies.get(i)))
+                    {
+                        enemies.remove(e1);
+                        break;
+                    }
+                    else
+                    {
+                        enemySpawnFrames = 0;
+                    }
+                }
+            }
             if(width == 0) {
                 width=canvas.getWidth();
                 height=canvas.getHeight();
                 x = width/2;
-                Log.i("Arrived", String.valueOf(x));
             }
-            //Bitmap bmp = player.getImage();
+            //Loop through all Enemies and do all checks and balances
+            for(int i = 0; i < enemies.size(); i++)
+            {
+                canvas.drawBitmap(enemies.get(i).getImage(), enemies.get(i).getX(), enemies.get(i).getY(), p);
+                enemies.get(i).move("y", 5);
+                enemies.get(i).shoot(projectiles);
+                if(enemies.get(i).getY() > height+enemies.get(i).getHeight())
+                {
+                    enemies.remove(i);
+                    break;
+                }
+            }
+            //Loop through all Projectiles and do all checks and balances
+            for(int i = 0; i < projectiles.size(); i++)
+            {
+                if(projectiles.get(i) == null)
+                {
+                    break;
+                }
+                canvas.drawBitmap(projectiles.get(i).getImage(), projectiles.get(i).getX(), projectiles.get(i).getY(), p);
+                if(projectiles.get(i).getY() > height+projectiles.get(i).getHeight() || projectiles.get(i).getY() > height+projectiles.get(i).getHeight())
+                {
+                    projectiles.remove(i);
+                    break;
+                }
+                if(projectiles.get(i).hitEnemy())
+                {
+                    projectiles.get(i).move("y", -20);
+                    for(int j = 0; j < enemies.size(); j++)
+                    {
+                        if(enemies.get(j) == null)
+                        {
+                            break;
+                        }
+                        if(projectiles.get(i).intersects(enemies.get(j)))
+                        {
+                            projectiles.remove(i);
+                            enemies.get(j).setHealth(enemies.get(j).getHealth()-1);
+                            if(enemies.get(j).getHealth() <= 0)
+                            {
+                                enemies.remove(j);
+                                player.setScore(player.getScore()+100);
+                                break;
+                            }
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    projectiles.get(i).move("y", 20);
+                    if(projectiles.get(i).intersects(player))
+                    {
+                        if(player.getShield())
+                        {
+                            projectiles.remove(i);
+                            break;
+                        }
+                        else
+                        {
+                            player.setLives(player.getLives()-1);
+                            if(player.getLives() < 1)
+                            {
+                                gameOver();
+                                break;
+                            }
+                            projectiles.remove(i);
+                            break;
+                        }
+                    }
+                }
+            }
+            canvas.drawBitmap(player.getImage(), (-x+width), height-player.getHeight(), p);
+            if(player.getShield())
+            {
+                canvas.drawBitmap(shieldImg, player.getX()+shieldImg.getWidth()/12, player.getY()-shieldImg.getHeight()/2, p);
+            }
+            player.setLocation(-x+width,height-player.getHeight());
 
-            canvas.drawBitmap(player, (-x+width), height-250, p);
             //change log:
             //removed"-25+ from the width draw
 
@@ -131,30 +253,39 @@ public class MainActivity extends Activity implements SensorEventListener {
             //Check for collision and move ball back into bounds if collision is is found
             if(topCollision(y))
             {
-                y=size;
+                y=player.getHeight();
             }
 
             if(leftCollision(x))
             {
-                x=size;
+                x=player.getWidth();
             }
 
             if(rightCollision(x))
             {
-                x=width-size;
+                x=width;
             }
 
             if(bottomCollision(y))
             {
-                y = height-size;
+                y = height-player.getHeight();
             }
             invalidate();
         }
     }
+
+    private void gameOver()
+    {
+        enemies.clear();
+        projectiles.clear();
+        player.setScore(0);
+        player.setLives(5);
+    }
+
     //Checks top of screen collision or if ball goes past
     private boolean topCollision(float y)
     {
-        if(y-size <=0)
+        if(y-player.getHeight() <=0)
         {
             return true;
         }
@@ -166,7 +297,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     //Checks left of screen collision or if ball goes past
     private boolean leftCollision(float x)
     {
-        if(x-size<=0)
+        if(x-player.getWidth()<=0)
         {
             return true;
         }
@@ -190,7 +321,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     //Checks bottom of screen collision or if ball goes past
     private boolean bottomCollision(float y)
     {
-        if(y+size>=height)
+        if(y+player.getHeight()>=height)
         {
             return true;
         }

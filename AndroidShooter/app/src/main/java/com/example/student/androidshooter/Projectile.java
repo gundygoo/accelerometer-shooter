@@ -1,5 +1,6 @@
 package com.example.student.androidshooter;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 
@@ -8,16 +9,27 @@ import android.graphics.BitmapFactory;
  */
 public class Projectile extends Sprite {
 
-    boolean hitEnemy;
+    private boolean hitEnemy;
+    private Context context;
 
-    Projectile(int x, int y, String name, boolean hitEnemy)
+    Projectile(Context context, float x, float y, String name, boolean hitEnemy)
     {
-        super(x,y,10,42);
+        super(context,x,y,10,42);
+        this.context = context;
         if(name == "bullet")
         {
-            super.setImage(BitmapFactory.decodeResource(Resources.getSystem(), R.mipmap.bullet));
+            super.setImage(BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet));
+        }
+        if(name == "photon")
+        {
+            super.setImage(BitmapFactory.decodeResource(context.getResources(), R.drawable.photon));
         }
         this.hitEnemy = hitEnemy;
+    }
+
+    public boolean hitEnemy()
+    {
+        return hitEnemy;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.student.androidshooter;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -8,14 +9,16 @@ import android.graphics.BitmapFactory;
  */
 public class Sprite {
 
-    private int x;
-    private int y;
-    private int width;
-    private int height;
+    private float x;
+    private float y;
+    private float width;
+    private float height;
     private Bitmap image;
+    private Context context;
 
-    Sprite(int x, int y, int width, int height)
+    Sprite(Context context, float x, float y, float width, float height)
     {
+        this.context = context;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -35,6 +38,12 @@ public class Sprite {
     }
 
     public void setLocation(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void setLocation(float x, float y)
     {
         this.x = x;
         this.y = y;
@@ -76,6 +85,8 @@ public class Sprite {
     protected void setImage(Bitmap newImage)
     {
         this.image = newImage;
+        width = image.getWidth();
+        height = image.getHeight();
     }
 
     public Bitmap getImage()
@@ -83,7 +94,7 @@ public class Sprite {
         return image;
     }
 
-    public int getX()
+    public float getX()
     {
         return x;
     }
@@ -93,7 +104,7 @@ public class Sprite {
         this.x = x;
     }
 
-    public int getY()
+    public float getY()
     {
         return y;
     }
@@ -103,12 +114,12 @@ public class Sprite {
         this.y = y;
     }
 
-    public int getWidth()
+    public float getWidth()
     {
         return width;
     }
 
-    public int getHeight()
+    public float getHeight()
     {
         return height;
     }
