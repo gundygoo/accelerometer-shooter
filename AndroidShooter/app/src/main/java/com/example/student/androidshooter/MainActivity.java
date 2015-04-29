@@ -15,13 +15,17 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -60,7 +64,6 @@ public class MainActivity extends Activity implements SensorEventListener {
     private int shootingFrames = 0;
     private int enemySpawnFrames = 0;
     private Bitmap shieldImg;
-
 
 
     @Override
@@ -243,9 +246,6 @@ public class MainActivity extends Activity implements SensorEventListener {
             }
             player.setLocation(-x+width,height-player.getHeight());
 
-            //change log:
-            //removed"-25+ from the width draw
-
             //draw a circle at the point designated based on accelerometer data and previous points with a specified size and a color P
             //canvas.drawCircle(x, y, size, p);
 
@@ -336,4 +336,43 @@ public class MainActivity extends Activity implements SensorEventListener {
             return false;
         }
     }
+
+    //code to register a double tap on the device screen to bring up pause menu
+    /*
+    public class MyView extends View {
+
+        GestureDetector gestureDetector;
+
+        public MyView(Context context, AttributeSet attrs) {
+            super(context, attrs);
+            // creating new gesture detector
+            gestureDetector = new GestureDetector(context, new GestureListener());
+        }
+
+        // skipping measure calculation and drawing
+
+        // delegate the event to the gesture detector
+        @Override
+        public boolean onTouchEvent(MotionEvent e) {
+            return gestureDetector.onTouchEvent(e);
+        }
+
+        private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
+            // event when double tap occurs
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                float x = e.getX();
+                float y = e.getY();
+
+                Log.d("Double Tap", "Tapped at: (" + x + "," + y + ")");
+
+                return true;
+            }
+        }
+    }*/
 }

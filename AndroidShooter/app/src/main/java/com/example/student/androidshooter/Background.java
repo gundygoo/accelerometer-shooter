@@ -28,6 +28,7 @@ public class Background extends View
     int numOfStars = 100;
     //Array of stars for background
     private Circle[] stars = new Circle[numOfStars];
+
     public void onDraw(Canvas canvas)
     {
         //Makes background black

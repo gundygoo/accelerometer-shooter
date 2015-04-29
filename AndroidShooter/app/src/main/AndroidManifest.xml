@@ -38,6 +38,14 @@
             android:screenOrientation="portrait"
             >
         </activity>
+        <activity
+            android:name=".PauseMenu"
+            android:label="Pause Menu"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+
     </application>
 
 </manifest>

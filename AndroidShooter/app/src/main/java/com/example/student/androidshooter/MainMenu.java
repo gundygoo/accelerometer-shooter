@@ -86,7 +86,6 @@ public class MainMenu extends Activity implements View.OnClickListener {
             Log.d("Main Menu", "Start was clicked");
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivityForResult(intent, 0);
-
         }
         if(v.getId()==R.id.leaderboard)
         {
