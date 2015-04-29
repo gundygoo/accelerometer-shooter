@@ -17,6 +17,7 @@ import android.view.View;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -25,66 +26,83 @@ import java.util.Random;
 //A view with a scrolling randomly created star background
 public class ShootingInstructions extends View implements SensorEventListener
 {
-    private Bitmap player;
-    private Player playerP;
+    private Player player;
     private int width = 0;
     private int height=0;
     //Starting position and keeps track of where ball is currently
-    private double neutralyPos;
+    ArrayList<Projectile> projectiles;
+    private double neutralYPos=0;
     private float x=0;
     private float y=0;
     private Paint p;
     private double xPos, yPos;
     private SensorManager mSensorManager;
+    private int shootingFrames=0;
     //A sensor which we will later register as an accelerometer sensor
     private Sensor mSensor;
     //Constructor without attributes
-    Context mContext;
+    private Context mContext;
+    private Bitmap shieldImg;
     public ShootingInstructions(Context mContext)
     {
         super(mContext);
         this.mContext = mContext;
-        player = BitmapFactory.decodeResource(getResources(), R.drawable.player);
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
-        playerP = new Player(mContext);
-        neutralyPos=getCurrentNeutralYPos();
+        projectiles = new ArrayList<Projectile>();
+        player = new Player(mContext.getApplicationContext());
+        neutralYPos=getCurrentNeutralYPos();
+        shieldImg = BitmapFactory.decodeResource(getResources(), R.drawable.shield);
     }
     //Constructor with attributes
     public ShootingInstructions(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         mContext = context;
-        player = BitmapFactory.decodeResource(getResources(), R.drawable.player);
+        player = new Player(mContext.getApplicationContext());
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
-        playerP = new Player(mContext);
-        neutralyPos=getCurrentNeutralYPos();
+        projectiles = new ArrayList<Projectile>();
+        neutralYPos=getCurrentNeutralYPos();
+        shieldImg = BitmapFactory.decodeResource(getResources(), R.drawable.shield);
     }
     //Drawing a view with a ship that shoots but does not move todo: get rid of movability and add ability to shoot
     public void onDraw(Canvas canvas)
     {
+        shootingFrames++;
+        if(shootingFrames > 30 && !player.getShield())
+        {
+            player.shoot(projectiles);
+            shootingFrames = 0;
+        }
         if(width == 0) {
             width=canvas.getWidth();
             height=canvas.getHeight();
-            x = width/2;
-            Log.i("Arrived", String.valueOf(x));
+            x = (width+player.getWidth())/2;
         }
-        canvas.drawBitmap(player, (-x+width), height-playerP.getHeight(), p);
-        x= (float) (xPos*2 + x);
-        if(leftCollision(x))
+        for(int i = 0; i < projectiles.size(); i++)
         {
-            //Log.d("MovementInstructions","Left Collision");
-            x=width;
-        }
+            projectiles.get(i).move("y", -20);
+            if(projectiles.get(i) == null)
+            {
+                break;
+            }
+            canvas.drawBitmap(projectiles.get(i).getImage(), projectiles.get(i).getX(), projectiles.get(i).getY(), p);
+            if(projectiles.get(i).getY() > height+projectiles.get(i).getHeight() || projectiles.get(i).getY() > height+projectiles.get(i).getHeight())
+            {
+                projectiles.remove(i);
+                break;
+            }
 
-        if(rightCollision(x))
-        {
-            //Log.d("MovementInstructions","Right Collision");
-            x=playerP.getWidth();
         }
+        canvas.drawBitmap(player.getImage(), (-x+width), height-player.getHeight(), p);
+        if(player.getShield())
+        {
+            canvas.drawBitmap(shieldImg, player.getX()+shieldImg.getWidth()/12, player.getY()-shieldImg.getHeight()/2, p);
+        }
+        player.setLocation(-x+width,height-player.getHeight());
 
         invalidate();
     }
@@ -93,37 +111,20 @@ public class ShootingInstructions extends View implements SensorEventListener
     public void onSensorChanged(SensorEvent event) {
         xPos = event.values[0];
         yPos = event.values[1];
+        if (yPos <= neutralYPos)
+        {
+            player.setShield(false);
+        }
+        if (yPos > neutralYPos)
+        {
+            player.setShield(true);
+        }
 
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-    }
-    //Checks left of screen collision or if ball goes past
-    private boolean leftCollision(float x)
-    {
-
-        if(x>=width)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    //Checks right of screen collision or if ball goes past
-    private boolean rightCollision(float x)
-    {
-        if(x-playerP.getWidth()<=0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
     private double getCurrentNeutralYPos()
     {

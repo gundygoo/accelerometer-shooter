@@ -9,7 +9,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/mainmenu1"
+        android:id="@+id/mainmenu3"
         android:background="@drawable/mainmenu"
         android:layout_gravity="center_horizontal|top"
         android:layout_marginTop="20dp"
@@ -18,27 +18,22 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/moveForward1"
+        android:id="@+id/moveBackward3"
+        android:background="@drawable/backwardarrow"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="left|top" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/moveForward3"
         android:background="@drawable/forwardarrow"
         android:layout_marginTop="15dp"
         android:layout_gravity="right|top" />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/shootinginstructions"
+        android:src="@drawable/howtoplay"
         android:layout_gravity="center|center"/>
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center|bottom">
 
-        <view
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            class="com.example.student.androidshooter.ShootingInstructions"
-            android:id="@+id/view"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
 
 </FrameLayout>

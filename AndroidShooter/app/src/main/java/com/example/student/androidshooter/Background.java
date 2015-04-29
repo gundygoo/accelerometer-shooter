@@ -25,7 +25,7 @@ public class Background extends View
     //Checks if stars have already been created
     private boolean appStarted=false;
     //Use this variable to manipulate number of stars created
-    int numOfStars = 50;
+    int numOfStars = 100;
     //Array of stars for background
     private Circle[] stars = new Circle[numOfStars];
     public void onDraw(Canvas canvas)

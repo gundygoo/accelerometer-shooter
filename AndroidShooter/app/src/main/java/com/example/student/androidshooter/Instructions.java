@@ -16,9 +16,14 @@ import com.example.student.androidshooter.R;
 public class Instructions extends Activity implements View.OnClickListener{
     ImageButton mainMenu1;
     ImageButton mainMenu2;
+    ImageButton mainMenu3;
+    ImageButton mainMenu4;
     ImageButton forward1;
     ImageButton forward2;
+    ImageButton forward3;
     ImageButton backward2;
+    ImageButton backward3;
+    ImageButton backward4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +65,57 @@ public class Instructions extends Activity implements View.OnClickListener{
             forward1.setOnClickListener(this);
         }
         if(v.getId()==R.id.mainmenu2)
+        {
+            Intent i = getIntent();
+            setResult(Activity.RESULT_OK, i);
+            finish();
+        }
+        if(v.getId()==R.id.moveForward2)
+        {
+            setContentView(R.layout.activity_instructions_howtoplay);
+            mainMenu3 = (ImageButton) findViewById(R.id.mainmenu3);
+            mainMenu3.setOnClickListener(this);
+
+            forward3 = (ImageButton) findViewById(R.id.moveForward3);
+            forward3.setOnClickListener(this);
+            backward3 = (ImageButton) findViewById(R.id.moveBackward3);
+            backward3.setOnClickListener(this);
+        }
+        if(v.getId()==R.id.moveBackward3)
+        {
+            setContentView(R.layout.activity_instructions_moving);
+            forward2 = (ImageButton) findViewById(R.id.moveForward2);
+            forward2.setOnClickListener(this);
+            backward2 = (ImageButton) findViewById(R.id.moveBackward2);
+            backward2.setOnClickListener(this);
+            mainMenu2 = (ImageButton) findViewById(R.id.mainmenu2);
+            mainMenu2.setOnClickListener(this);
+        }
+        if(v.getId()==R.id.mainmenu3)
+        {
+            Intent i = getIntent();
+            setResult(Activity.RESULT_OK, i);
+            finish();
+        }
+        if(v.getId()==R.id.moveForward3)
+        {
+            setContentView(R.layout.activity_instructions_powerups);
+            backward4 = (ImageButton) findViewById(R.id.moveBackward4);
+            backward4.setOnClickListener(this);
+            mainMenu4 = (ImageButton) findViewById(R.id.mainmenu4);
+            mainMenu4.setOnClickListener(this);
+        }
+        if(v.getId()==R.id.moveBackward4)
+        {
+            setContentView(R.layout.activity_instructions_howtoplay);
+            forward3 = (ImageButton) findViewById(R.id.moveForward3);
+            forward3.setOnClickListener(this);
+            backward3 = (ImageButton) findViewById(R.id.moveBackward3);
+            backward3.setOnClickListener(this);
+            mainMenu3 = (ImageButton) findViewById(R.id.mainmenu3);
+            mainMenu3.setOnClickListener(this);
+        }
+        if(v.getId()==R.id.mainmenu4)
         {
             Intent i = getIntent();
             setResult(Activity.RESULT_OK, i);
