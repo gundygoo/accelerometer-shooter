@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -7,4 +7,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</RelativeLayout>
+    <view
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        class="com.example.student.androidshooter.MainActivity"
+        android:id="@+id/mainActView"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+</FrameLayout>

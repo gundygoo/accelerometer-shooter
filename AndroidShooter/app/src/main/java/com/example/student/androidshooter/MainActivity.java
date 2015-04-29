@@ -53,8 +53,8 @@ public class MainActivity extends Activity implements SensorEventListener {
     int width = 0;
     int height;
     //Starting position and keeps track of where ball is currently
-    float x=0;
-    float y=0;
+    float x = 0;
+    float y = 0;
     //Size of ball
     int size;
     Paint p;
@@ -64,6 +64,8 @@ public class MainActivity extends Activity implements SensorEventListener {
     private int shootingFrames = 0;
     private int enemySpawnFrames = 0;
     private Bitmap shieldImg;
+    int clickCount=0;
+    long startTime;
 
 
     @Override
@@ -94,7 +96,7 @@ public class MainActivity extends Activity implements SensorEventListener {
             while ((inputString = inputReader.readLine()) != null) {
                 stringBuffer.append(inputString + "\n");
             }
-            neutralYPos =Double.valueOf(String.valueOf(stringBuffer));
+            neutralYPos = Double.valueOf(String.valueOf(stringBuffer));
             Log.i("angle", String.valueOf(neutralYPos));
         } catch (IOException e) {
             e.printStackTrace();
@@ -106,17 +108,15 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         xPos = event.values[0];
         yPos = event.values[1];
-        if (yPos <= neutralYPos)
-        {
+        if (yPos <= neutralYPos) {
             player.setShield(false);
         }
-        if (yPos > neutralYPos)
-        {
+        if (yPos > neutralYPos) {
             player.setShield(true);
         }
     }
 
-    public void onAccuracyChanged(Sensor sensor, int accuracy){
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
 
@@ -125,6 +125,7 @@ public class MainActivity extends Activity implements SensorEventListener {
         super.onPause();
         mSensorManager.unregisterListener(this);
     }
+
     //Resumes listening to accelerometer data when app is brought out of paused state
     public void onResume() {
         super.onResume();
@@ -138,98 +139,75 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         public void onDraw(Canvas canvas) {
             shootingFrames++;
-            if(shootingFrames > 30 && !player.getShield())
-            {
+            if (shootingFrames > 30 && !player.getShield()) {
                 player.shoot(projectiles);
                 shootingFrames = 0;
             }
             //Spawn enemies at a random but steady pace
             enemySpawnFrames++;
-            if(enemySpawnFrames > new Random().nextInt(100)+50)
-            {
-                Enemy e1 = new Enemy(getContext(), new Random().nextInt(width-328), -20);
+            if (enemySpawnFrames > new Random().nextInt(100) + 50) {
+                Enemy e1 = new Enemy(getContext(), new Random().nextInt(width - 328), -20);
                 enemies.add(e1);
-                for(int i = 0; i < enemies.size()-1; i++)
-                {
-                    if(e1.intersects(enemies.get(i)))
-                    {
+                for (int i = 0; i < enemies.size() - 1; i++) {
+                    if (e1.intersects(enemies.get(i))) {
                         enemies.remove(e1);
                         break;
-                    }
-                    else
-                    {
+                    } else {
                         enemySpawnFrames = 0;
                     }
                 }
             }
-            if(width == 0) {
-                width=canvas.getWidth();
-                height=canvas.getHeight();
-                x = width/2;
+            if (width == 0) {
+                width = canvas.getWidth();
+                height = canvas.getHeight();
+                x = width / 2;
             }
             //Loop through all Enemies and do all checks and balances
-            for(int i = 0; i < enemies.size(); i++)
-            {
+            for (int i = 0; i < enemies.size(); i++) {
                 canvas.drawBitmap(enemies.get(i).getImage(), enemies.get(i).getX(), enemies.get(i).getY(), p);
                 enemies.get(i).move("y", 5);
                 enemies.get(i).shoot(projectiles);
-                if(enemies.get(i).getY() > height+enemies.get(i).getHeight())
-                {
+                if (enemies.get(i).getY() > height + enemies.get(i).getHeight()) {
                     enemies.remove(i);
                     break;
                 }
             }
             //Loop through all Projectiles and do all checks and balances
-            for(int i = 0; i < projectiles.size(); i++)
-            {
-                if(projectiles.get(i) == null)
-                {
+            for (int i = 0; i < projectiles.size(); i++) {
+                if (projectiles.get(i) == null) {
                     break;
                 }
                 canvas.drawBitmap(projectiles.get(i).getImage(), projectiles.get(i).getX(), projectiles.get(i).getY(), p);
-                if(projectiles.get(i).getY() > height+projectiles.get(i).getHeight() || projectiles.get(i).getY() > height+projectiles.get(i).getHeight())
-                {
+                if (projectiles.get(i).getY() > height + projectiles.get(i).getHeight() || projectiles.get(i).getY() > height + projectiles.get(i).getHeight()) {
                     projectiles.remove(i);
                     break;
                 }
-                if(projectiles.get(i).hitEnemy())
-                {
+                if (projectiles.get(i).hitEnemy()) {
                     projectiles.get(i).move("y", -20);
-                    for(int j = 0; j < enemies.size(); j++)
-                    {
-                        if(enemies.get(j) == null)
-                        {
+                    for (int j = 0; j < enemies.size(); j++) {
+                        if (enemies.get(j) == null) {
                             break;
                         }
-                        if(projectiles.get(i).intersects(enemies.get(j)))
-                        {
+                        if (projectiles.get(i).intersects(enemies.get(j))) {
                             projectiles.remove(i);
-                            enemies.get(j).setHealth(enemies.get(j).getHealth()-1);
-                            if(enemies.get(j).getHealth() <= 0)
-                            {
+                            enemies.get(j).setHealth(enemies.get(j).getHealth() - 1);
+                            if (enemies.get(j).getHealth() <= 0) {
                                 enemies.remove(j);
-                                player.setScore(player.getScore()+100);
+                                player.setScore(player.getScore() + 100);
                                 break;
                             }
                             break;
                         }
                     }
-                }
-                else
-                {
+                } else {
                     projectiles.get(i).move("y", 20);
-                    if(projectiles.get(i).intersects(player))
-                    {
-                        if(player.getShield())
-                        {
+                    if (projectiles.get(i).intersects(player)) {
+                        if (player.getShield()) {
                             projectiles.remove(i);
                             break;
-                        }
-                        else
-                        {
-                            player.setLives(player.getLives()-1);
-                            if(player.getLives() < 1)
-                            {
+                        } else {
+                            player.setLives(player.getLives() - 1);
+                            if (player.getLives() < 1) {
                                 gameOver();
                                 break;
                             }
@@ -239,49 +217,48 @@ public class MainActivity extends Activity implements SensorEventListener {
                     }
                 }
             }
-            canvas.drawBitmap(player.getImage(), (-x+width), height-player.getHeight(), p);
-            if(player.getShield())
-            {
-                canvas.drawBitmap(shieldImg, player.getX()+shieldImg.getWidth()/12, player.getY()-shieldImg.getHeight()/2, p);
+            canvas.drawBitmap(player.getImage(), (-x + width), height - player.getHeight(), p);
+            if (player.getShield()) {
+                canvas.drawBitmap(shieldImg, player.getX() + shieldImg.getWidth() / 12, player.getY() - shieldImg.getHeight() / 2, p);
             }
-            player.setLocation(-x+width,height-player.getHeight());
+            player.setLocation(-x + width, height - player.getHeight());
 
             //draw a circle at the point designated based on accelerometer data and previous points with a specified size and a color P
             //canvas.drawCircle(x, y, size, p);
 
             //canvas.drawBitmap(player.getImage(), (float)yPos*100+width/2-25, height-100, p);
             //Move ball based on where ball is and accelerometer data
-            x= (float) (xPos*2 + x);
+            x = (float) (xPos * 2 + x);
             //y= (float) (yPos*2 + y);
 
             //Log.i("xPos", String.valueOf(xPos));
             //Log.i("yPos", String.valueOf(yPos));
             //Check for collision and move ball back into bounds if collision is is found
-            if(topCollision(y))
-            {
-                y=player.getHeight();
+            if (topCollision(y)) {
+                y = player.getHeight();
             }
 
-            if(leftCollision(x))
-            {
-                x=player.getWidth();
+            if (leftCollision(x)) {
+                x = player.getWidth();
             }
 
-            if(rightCollision(x))
-            {
-                x=width;
+            if (rightCollision(x)) {
+                x = width;
             }
 
-            if(bottomCollision(y))
+            if (bottomCollision(y)) {
+                y = height - player.getHeight();
+            }
+
+            if (onTouch())
             {
-                y = height-player.getHeight();
+
             }
             invalidate();
         }
     }
 
-    private void gameOver()
-    {
+    private void gameOver() {
         enemies.clear();
         projectiles.clear();
         player.setScore(0);
@@ -289,90 +266,63 @@ public class MainActivity extends Activity implements SensorEventListener {
     }
 
     //Checks top of screen collision or if ball goes past
-    private boolean topCollision(float y)
-    {
-        if(y-player.getHeight() <=0)
-        {
+    private boolean topCollision(float y) {
+        if (y - player.getHeight() <= 0) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
+
     //Checks left of screen collision or if ball goes past
-    private boolean leftCollision(float x)
-    {
-        if(x-player.getWidth()<=0)
-        {
+    private boolean leftCollision(float x) {
+        if (x - player.getWidth() <= 0) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
+
     //Checks right of screen collision or if ball goes past
-    private boolean rightCollision(float x)
-    {
-        if(x+size>=width)
-        {
+    private boolean rightCollision(float x) {
+        if (x + size >= width) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
+
     //Checks bottom of screen collision or if ball goes past
-    private boolean bottomCollision(float y)
-    {
-        if(y+player.getHeight()>=height)
-        {
+    private boolean bottomCollision(float y) {
+        if (y + player.getHeight() >= height) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
     //code to register a double tap on the device screen to bring up pause menu
-    /*
-    public class MyView extends View {
+    public boolean onTouch(View paramView, MotionEvent event) {
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_UP:
 
-        GestureDetector gestureDetector;
+                clickCount++;
 
-        public MyView(Context context, AttributeSet attrs) {
-            super(context, attrs);
-            // creating new gesture detector
-            gestureDetector = new GestureDetector(context, new GestureListener());
+                if (clickCount == 1) {
+                    startTime = System.currentTimeMillis();
+                } else if (clickCount == 2) {
+                    long duration = System.currentTimeMillis() - startTime;
+                    if (duration <= 1000) {
+                        Log.i("double tap", "double tapped");
+                        clickCount = 0;
+                        duration = 0;
+                    } else {
+                        clickCount = 1;
+                        startTime = System.currentTimeMillis();
+                    }
+                    break;
+                }
         }
-
-        // skipping measure calculation and drawing
-
-        // delegate the event to the gesture detector
-        @Override
-        public boolean onTouchEvent(MotionEvent e) {
-            return gestureDetector.onTouchEvent(e);
-        }
-
-        private class GestureListener extends GestureDetector.SimpleOnGestureListener {
-
-            @Override
-            public boolean onDown(MotionEvent e) {
-                return true;
-            }
-            // event when double tap occurs
-            @Override
-            public boolean onDoubleTap(MotionEvent e) {
-                float x = e.getX();
-                float y = e.getY();
-
-                Log.d("Double Tap", "Tapped at: (" + x + "," + y + ")");
-
-                return true;
-            }
-        }
-    }*/
+        return true;
+    }
 }
