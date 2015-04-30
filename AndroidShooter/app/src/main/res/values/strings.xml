@@ -6,4 +6,5 @@
     <string name="title_activity_calibrate">Calibrate</string>
     <string name="title_activity_instructions">Instructions</string>
     <string name="title_activity_mainactivity">MainActivity</string>
+    <string name="title_activity_game_over">GameOver</string>
 </resources>

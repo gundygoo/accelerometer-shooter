@@ -19,33 +19,32 @@
         </activity>
         <activity
             android:name=".Calibrate"
-            android:label="@string/title_activity_calibrate"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            >
+            android:label="@string/title_activity_calibrate"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Instructions"
-            android:label="@string/title_activity_instructions"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            >
+            android:label="@string/title_activity_instructions"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_mainactivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            >
+            android:label="@string/title_activity_mainactivity"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".PauseMenu"
-            android:label="Pause Menu"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            >
+            android:label="Pause Menu"
+            android:screenOrientation="portrait" >
         </activity>
-
+        <activity
+            android:name=".GameOver"
+            android:label="@string/title_activity_game_over" >
+        </activity>
     </application>
 
 </manifest>

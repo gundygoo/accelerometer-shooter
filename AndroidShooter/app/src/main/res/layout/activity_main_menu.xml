@@ -5,22 +5,27 @@
     <com.example.student.androidshooter.Background
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
+    <ImageView
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:layout_gravity="center|top"
+        android:src="@drawable/title"
+        />
     <LinearLayout
+        android:layout_marginTop="25dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|center">
-        <ImageView
-            android:layout_marginTop="25dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/title"
-            android:layout_gravity="center"
-            android:src="@drawable/title"
-            />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center">
+
+
+
         <ImageButton
-            android:layout_marginTop="25dp"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/start"

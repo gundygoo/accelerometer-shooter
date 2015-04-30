@@ -3,6 +3,7 @@ package com.example.student.androidshooter;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,6 +24,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.sql.Time;
@@ -250,10 +252,10 @@ public class MainActivity extends Activity implements SensorEventListener {
                 y = height - player.getHeight();
             }
 
-            if (onTouch())
+            /*if (onTouch())
             {
 
-            }
+            }*/
             invalidate();
         }
     }
@@ -261,8 +263,22 @@ public class MainActivity extends Activity implements SensorEventListener {
     private void gameOver() {
         enemies.clear();
         projectiles.clear();
+        String playersScore = player.getScore()+" ";
+        File file = new File("leaderboard");
+        try {
+            FileOutputStream fos = openFileOutput("leaderboard", Context.MODE_PRIVATE);
+            fos.write(playersScore.getBytes());
+            fos.close();
+        }
+        catch (Exception e)
+        {
+        }
         player.setScore(0);
         player.setLives(5);
+        Intent intent = new Intent(getApplicationContext(), GameOver.class);
+        startActivityForResult(intent, 0);
+        finish();
+
     }
 
     //Checks top of screen collision or if ball goes past
