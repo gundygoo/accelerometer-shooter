@@ -45,6 +45,10 @@
             android:name=".GameOver"
             android:label="@string/title_activity_game_over" >
         </activity>
+        <activity
+            android:name=".Leaderboard"
+            android:label="@string/title_activity_leaderboard" >
+        </activity>
     </application>
 
 </manifest>

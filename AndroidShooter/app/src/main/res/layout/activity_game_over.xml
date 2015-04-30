@@ -36,11 +36,12 @@
             android:layout_width="200dp"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:id="@+id/editText"
+            android:id="@+id/playerName"
             android:text="Enter Name"
             android:textColor="@color/black"
             android:background="@color/yellow"
-            android:textSize="32dp"/>
+            android:textSize="32dp"
+            android:maxLength="17"/>
 
         <ImageButton
             android:layout_marginTop="5dp"

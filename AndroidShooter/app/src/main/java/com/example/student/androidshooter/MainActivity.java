@@ -264,18 +264,11 @@ public class MainActivity extends Activity implements SensorEventListener {
         enemies.clear();
         projectiles.clear();
         String playersScore = player.getScore()+" ";
-        File file = new File("leaderboard");
-        try {
-            FileOutputStream fos = openFileOutput("leaderboard", Context.MODE_PRIVATE);
-            fos.write(playersScore.getBytes());
-            fos.close();
-        }
-        catch (Exception e)
-        {
-        }
+
         player.setScore(0);
         player.setLives(5);
         Intent intent = new Intent(getApplicationContext(), GameOver.class);
+        intent.putExtra("Score", playersScore);
         startActivityForResult(intent, 0);
         finish();
 
