@@ -3,6 +3,7 @@ package com.example.student.androidshooter;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -64,8 +65,9 @@ public class MainActivity extends Activity implements SensorEventListener {
     private int shootingFrames = 0;
     private int enemySpawnFrames = 0;
     private Bitmap shieldImg;
-    int clickCount=0;
+    int clickCount = 0;
     long startTime;
+    GestureDetector gestureDetector;
 
 
     @Override
@@ -87,6 +89,7 @@ public class MainActivity extends Activity implements SensorEventListener {
         enemies.add(new Enemy(this.getApplicationContext(), 20, height));
         p = new Paint();
 
+
         //set up file reader to get the neutralypos from calibrate activity
         try {
             BufferedReader inputReader = new BufferedReader(new InputStreamReader(
@@ -101,7 +104,27 @@ public class MainActivity extends Activity implements SensorEventListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                Log.d("Main activity", "double tapped, pause menu here");
+                Intent intent = new Intent(getApplicationContext(), Pause_menu.class);
+                startActivityForResult(intent, 0);
+                return true;
+            }
+        });
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (gestureDetector.onTouchEvent(event))
+            return true;
+        return super.onTouchEvent(event);
+    }
+
+
+
 
     //Every time the sensor data changes updates the speed at which x and y are moved
     public void onSensorChanged(SensorEvent event) {
@@ -250,10 +273,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                 y = height - player.getHeight();
             }
 
-            if (onTouch())
-            {
 
-            }
             invalidate();
         }
     }
@@ -302,27 +322,5 @@ public class MainActivity extends Activity implements SensorEventListener {
     }
 
     //code to register a double tap on the device screen to bring up pause menu
-    public boolean onTouch(View paramView, MotionEvent event) {
-        switch (event.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_UP:
 
-                clickCount++;
-
-                if (clickCount == 1) {
-                    startTime = System.currentTimeMillis();
-                } else if (clickCount == 2) {
-                    long duration = System.currentTimeMillis() - startTime;
-                    if (duration <= 1000) {
-                        Log.i("double tap", "double tapped");
-                        clickCount = 0;
-                        duration = 0;
-                    } else {
-                        clickCount = 1;
-                        startTime = System.currentTimeMillis();
-                    }
-                    break;
-                }
-        }
-        return true;
-    }
 }

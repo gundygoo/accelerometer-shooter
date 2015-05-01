@@ -39,8 +39,8 @@
             >
         </activity>
         <activity
-            android:name=".PauseMenu"
-            android:label="Pause Menu"
+            android:name=".Pause_menu"
+            android:label="Pause_menu"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             >
