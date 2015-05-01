@@ -24,6 +24,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.sql.Time;
@@ -273,7 +274,14 @@ public class MainActivity extends Activity implements SensorEventListener {
                 y = height - player.getHeight();
             }
 
+<<<<<<< HEAD
 
+=======
+            /*if (onTouch())
+            {
+
+            }*/
+>>>>>>> origin/master
             invalidate();
         }
     }
@@ -281,8 +289,15 @@ public class MainActivity extends Activity implements SensorEventListener {
     private void gameOver() {
         enemies.clear();
         projectiles.clear();
+        String playersScore = player.getScore()+" ";
+
         player.setScore(0);
         player.setLives(5);
+        Intent intent = new Intent(getApplicationContext(), GameOver.class);
+        intent.putExtra("Score", playersScore);
+        startActivityForResult(intent, 0);
+        finish();
+
     }
 
     //Checks top of screen collision or if ball goes past

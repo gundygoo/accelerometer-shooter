@@ -100,7 +100,7 @@ public class Instructions extends Activity implements View.OnClickListener{
         if(v.getId()==R.id.moveForward3)
         {
             setContentView(R.layout.activity_instructions_powerups);
-            backward4 = (ImageButton) findViewById(R.id.moveBackward4);
+            backward4 =  (ImageButton) findViewById(R.id.moveBackward4);
             backward4.setOnClickListener(this);
             mainMenu4 = (ImageButton) findViewById(R.id.mainmenu4);
             mainMenu4.setOnClickListener(this);

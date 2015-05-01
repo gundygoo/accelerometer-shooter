@@ -13,19 +13,44 @@
         android:layout_height="wrap_content"
         >
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:src="@drawable/calibrateinstructions"/>
 
-        <ImageButton
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/calibrate2"
+            android:id="@+id/imageView2"
             android:layout_gravity="center"
-            android:background="@drawable/calibrate"
-            android:src="@drawable/calibrate"/>
+            android:src="@drawable/gameover"/>
+
+        <TextView
+            android:layout_marginTop="-20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="SCORE: 4234323"
+            android:textSize="42dp"
+            android:gravity="center"
+            android:textColor="@color/yellow"
+            android:id="@+id/textView" />
+
+        <EditText
+            android:layout_width="200dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/playerName"
+            android:text="Enter Name"
+            android:textColor="@color/black"
+            android:background="@color/yellow"
+            android:textSize="32dp"
+            android:maxLength="17"/>
+
+        <ImageButton
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/start"
+            android:layout_gravity="center"
+            android:src="@drawable/start"
+            android:background="@drawable/start"/>
         <ImageButton
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
@@ -38,3 +63,4 @@
     </LinearLayout>
 
 </FrameLayout>
+
