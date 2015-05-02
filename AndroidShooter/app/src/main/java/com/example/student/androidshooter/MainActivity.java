@@ -274,14 +274,11 @@ public class MainActivity extends Activity implements SensorEventListener {
                 y = height - player.getHeight();
             }
 
-<<<<<<< HEAD
-
-=======
             /*if (onTouch())
             {
 
             }*/
->>>>>>> origin/master
+
             invalidate();
         }
     }

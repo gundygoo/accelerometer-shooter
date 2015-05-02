@@ -38,8 +38,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/playerName"
             android:text="Enter Name"
+            android:padding="10dp"
             android:textColor="@color/black"
-            android:background="@color/yellow"
+            android:background="@drawable/customtextbox"
             android:textSize="32dp"
             android:maxLength="17"/>
 
@@ -47,6 +48,7 @@
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:id="@+id/start"
             android:layout_gravity="center"
             android:src="@drawable/start"

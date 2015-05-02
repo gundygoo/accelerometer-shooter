@@ -2,11 +2,18 @@ package com.example.student.androidshooter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -16,14 +23,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class Leaderboard extends Activity {
-
+public class Leaderboard extends Activity implements View.OnClickListener {
+    ImageButton mainMenu=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leaderboard);
+        setContentView(R.layout.leaderboard);
         String score= "";
+        mainMenu = (ImageButton) findViewById(R.id.mainmenu);
+        mainMenu.setOnClickListener(this);
         ArrayList<Score> scores = new ArrayList<>();
+        ArrayList<TextView> editTexts = new ArrayList<TextView>();
         int arrayLength =0;
         try
         {
@@ -46,9 +56,25 @@ public class Leaderboard extends Activity {
             e.printStackTrace();
         }
         sortScores(scores, arrayLength);
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.scoresList);
         for(int j = 0; j<arrayLength&&j<10; j++)
         {
+            editTexts.add(new TextView(this));
             int scoreNum = j+1;
+            if(scoreNum<10)
+            {
+                editTexts.get(j).setText((scoreNum) + ".     " + scores.get(j).getPlayerName() + "     " + scores.get(j).getStringScore());
+            }
+            else
+            {
+                editTexts.get(j).setText((scoreNum) + ".   " + scores.get(j).getPlayerName() + "     " + scores.get(j).getStringScore());
+            }
+            editTexts.get(j).setBackgroundResource(R.drawable.leaderboardlistitem);
+            editTexts.get(j).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            editTexts.get(j).getLayoutParams().height = 40;
+            editTexts.get(j).setPadding(10, 3, 10, 3);
+            editTexts.get(j).setTextColor(getResources().getColor(R.color.green));
+            linearLayout.addView(editTexts.get(j));
             Log.d("Test String", (scoreNum) + "." + scores.get(j).getPlayerName() + scores.get(j).getStringScore());
            // Log.d("Test String", scores[j].getPlayerName());
         }
@@ -64,7 +90,7 @@ public class Leaderboard extends Activity {
         catch (Exception e)
         {
         }
-        finish();
+        //finish();
     }
 
     public class Score{
@@ -127,6 +153,15 @@ public class Leaderboard extends Activity {
                  }
              }
          }
+    }
+    public void onClick(View v) {
+        if(v.getId()==R.id.mainmenu)
+        {
+            Intent intent = new Intent(getApplicationContext(), MainMenu.class);
+            startActivityForResult(intent, 0);
+            finish();
+        }
+
     }
 
 }

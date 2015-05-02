@@ -36,14 +36,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-<<<<<<< HEAD
+
             android:name=".Pause_menu"
             android:label="Pause_menu"
-=======
-            android:name=".PauseMenu"
->>>>>>> origin/master
             android:configChanges="orientation"
-            android:label="Pause Menu"
+
             android:screenOrientation="portrait" >
         </activity>
         <activity
