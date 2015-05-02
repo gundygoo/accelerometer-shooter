@@ -36,7 +36,6 @@ public class GameOver extends Activity implements View.OnClickListener {
         start.setOnClickListener(this);
         playerNameInput = (EditText) findViewById(R.id.playerName);
         t= (TextView) findViewById(R.id.textView);
-        String score="";
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -77,7 +76,7 @@ public class GameOver extends Activity implements View.OnClickListener {
         String playerScoreNameCombo= score+","+playerName+"\n";
         File file = new File("leaderboard");
         try {
-            FileOutputStream fos = openFileOutput("leaderboard", Context.MODE_APPEND);
+            FileOutputStream fos = openFileOutput("leaderboard", Context.MODE_APPEND);//Todo change back to append when done testing
             fos.write(playerScoreNameCombo.getBytes());
             fos.close();
         }

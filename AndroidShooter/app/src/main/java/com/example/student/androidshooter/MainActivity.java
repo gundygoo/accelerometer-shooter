@@ -289,11 +289,20 @@ public class MainActivity extends Activity implements SensorEventListener {
     private void gameOver() {
         enemies.clear();
         projectiles.clear();
-        String playersScore = player.getScore()+" ";
+        String playersScore="";
+        if(player.getScore()==0)
+        {
+            playersScore = "0";
+        }
+        else
+        {
+            playersScore = player.getScore() + "";
+        }
 
         player.setScore(0);
         player.setLives(5);
         Intent intent = new Intent(getApplicationContext(), GameOver.class);
+        Log.d("???",playersScore);
         intent.putExtra("Score", playersScore);
         startActivityForResult(intent, 0);
         finish();

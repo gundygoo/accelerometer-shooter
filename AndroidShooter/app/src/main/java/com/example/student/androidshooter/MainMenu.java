@@ -91,6 +91,8 @@ public class MainMenu extends Activity implements View.OnClickListener {
         if(v.getId()==R.id.leaderboard)
         {
             Log.d("Main Menu", "Leaderboard was clicked");
+            Intent intent = new Intent(getApplicationContext(), Leaderboard.class);
+            startActivityForResult(intent, 0);
         }
         if(v.getId()==R.id.calibrate)
         {

@@ -48,11 +48,15 @@
         </activity>
         <activity
             android:name=".GameOver"
-            android:label="@string/title_activity_game_over" >
+            android:configChanges="orientation"
+            android:label="@string/title_activity_game_over"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".Leaderboard"
-            android:label="@string/title_activity_leaderboard" >
+            android:configChanges="orientation"
+            android:label="@string/title_activity_leaderboard"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
