@@ -2,6 +2,7 @@ package com.example.student.androidshooter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.util.ArrayList;
@@ -13,24 +14,52 @@ import java.util.Random;
 public class Enemy extends Sprite {
 
     private int health = 3;
+    public String name = "null";
+    private String ammoType = "null";
     private Context context;
     public int framesSinceShooting = 0;
+    int shootingRate = 50;
 
-    Enemy(Context context, int x, int y)
+    Enemy(Context context, int x, int y, String name)
     {
-        super(context,x,y,82,82);
-        super.setImage(BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy1));
+        super(context,x,y);
         this.context = context;
+        if(name == "orb")
+        {
+            Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy1);
+            super.setImage(Bitmap.createScaledBitmap(b, 80, 80, false));
+            this.name = name;
+            health = 3;
+            ammoType = "photon";
+        }
+        if(name == "torpedo")
+        {
+            Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy2);
+            super.setImage(Bitmap.createScaledBitmap(b, 78, 95, false));
+            this.name = name;
+            health = 1;
+            ammoType = "missile";
+        }
     }
 
     public void shoot(ArrayList<Projectile> projectiles)
     {
         framesSinceShooting++;
-        if(framesSinceShooting > new Random().nextInt(50)+50)
+        if(framesSinceShooting > shootingRate)
         {
-            projectiles.add(new Projectile(context, getX(), getY(), "photon", false));
-            projectiles.add(new Projectile(context, getX()+getWidth()-projectiles.get(0).getWidth(), getY(), "photon", false));
-            framesSinceShooting = 0;
+            if(ammoType == "photon")
+            {
+                projectiles.add(new Projectile(context, getX(), getY()+getHeight()/2, ammoType, false));
+                projectiles.add(new Projectile(context, getX()+getWidth()-projectiles.get(0).getWidth(), getY()+getHeight()/2, ammoType, false));
+                framesSinceShooting = 0;
+                shootingRate = new Random().nextInt(50)+50;
+            }
+            if(ammoType == "missile")
+            {
+                projectiles.add(new Projectile(context, getX(), getY()+getHeight()/2, ammoType, false));
+                framesSinceShooting = 0;
+                shootingRate = new Random().nextInt(100)+100;
+            }
         }
     }
 

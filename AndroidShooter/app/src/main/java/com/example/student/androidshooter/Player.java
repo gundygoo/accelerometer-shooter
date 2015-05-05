@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class Player extends Sprite{
 
     private boolean shield = false;
+    private boolean missileUpgrade = false;
     private int score = 0;
     private int health = 3;
     private int lives = 5;
@@ -20,10 +21,11 @@ public class Player extends Sprite{
 
     Player(Context context)
     {
-        super(context, 0, 0, 106, 130);
+        super(context, 0, 0);
         this.context = context;
         //THE LINE OF CODE BELOW IS FIXED!!!!!!!!!!!
-        super.setImage(BitmapFactory.decodeResource(context.getResources(), R.drawable.player));
+        Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
+        super.setImage(Bitmap.createScaledBitmap(b, 106, 130, false));
         lives = 5;
         score = 0;
         health = 3;
@@ -31,8 +33,21 @@ public class Player extends Sprite{
 
     public void shoot(ArrayList<Projectile> projectiles)
     {
-        projectiles.add(new Projectile(context, getX(), getY(), "bullet", true));
-        projectiles.add(new Projectile(context, getX()+getWidth()-projectiles.get(0).getWidth(), getY(), "bullet", true));
+        if(missileUpgrade)
+        {
+            projectiles.add(new Projectile(context, getX(), getY(), "player missile", true));
+            projectiles.add(new Projectile(context, getX()+getWidth()-projectiles.get(0).getWidth(), getY(), "player missile", true));
+        }
+        else
+        {
+            projectiles.add(new Projectile(context, getX(), getY(), "bullet", true));
+            projectiles.add(new Projectile(context, getX()+getWidth()-projectiles.get(0).getWidth(), getY(), "bullet", true));
+        }
+    }
+
+    public void setMissileUpgrade(boolean setting)
+    {
+        missileUpgrade = setting;
     }
 
     public void setLives(int lives)

@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
  */
 public class Sprite {
 
+    private int scaleMultiplier = 2;
     private float x;
     private float y;
     private float width;
@@ -16,13 +17,11 @@ public class Sprite {
     private Bitmap image;
     private Context context;
 
-    Sprite(Context context, float x, float y, float width, float height)
+    Sprite(Context context, float x, float y)
     {
         this.context = context;
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
     }
 
     public void move(String axis, int distance)
@@ -84,7 +83,7 @@ public class Sprite {
 
     protected void setImage(Bitmap newImage)
     {
-        this.image = newImage;
+        this.image = Bitmap.createScaledBitmap(newImage, newImage.getWidth()*scaleMultiplier, newImage.getHeight()*scaleMultiplier, false);
         width = image.getWidth();
         height = image.getHeight();
     }
@@ -122,5 +121,10 @@ public class Sprite {
     public float getHeight()
     {
         return height;
+    }
+
+    public void setScaleMultiplier(int newScale)
+    {
+        scaleMultiplier = newScale;
     }
 }

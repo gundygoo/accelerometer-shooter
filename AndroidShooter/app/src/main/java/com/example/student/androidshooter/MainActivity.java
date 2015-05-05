@@ -47,8 +47,6 @@ public class MainActivity extends Activity implements SensorEventListener {
     double xPos, yPos;
     //Base Y Position
     double neutralYPos = 6.7f;
-    //Player Object
-    Player playerP;
     //Custom view
     MyDrawView myDrawing = null;
     //Size of screen
@@ -61,10 +59,14 @@ public class MainActivity extends Activity implements SensorEventListener {
     int size;
     Paint p;
     Player player;
+    Sprite shield;
     private ArrayList<Enemy> enemies;
     private ArrayList<Projectile> projectiles;
+    private ArrayList<Sprite> upgrades;
+    private Sprite heart;
     private int shootingFrames = 0;
     private int enemySpawnFrames = 0;
+    private int enemySpawnRate = 50;
     private Bitmap shieldImg;
     int clickCount = 0;
     long startTime;
@@ -74,11 +76,18 @@ public class MainActivity extends Activity implements SensorEventListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Set up Heart
+        heart = new Sprite(this.getApplicationContext(), 0, 0);
+        heart.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.heart), 41, 48, false));
         //Set up Shield Image
+        shield = new Sprite(this.getApplicationContext(), 0, 0);
         shieldImg = BitmapFactory.decodeResource(getResources(), R.drawable.shield);
+        shieldImg = Bitmap.createScaledBitmap(shieldImg, 90, 50, false);
+        shield.setImage(shieldImg);
         //Setting up ArrayLists
         enemies = new ArrayList<Enemy>();
         projectiles = new ArrayList<Projectile>();
+        upgrades = new ArrayList<Sprite>();
         //Setting up sensor to listen to accelerometer
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -87,7 +96,6 @@ public class MainActivity extends Activity implements SensorEventListener {
         myDrawing = new MyDrawView(this);
         setContentView(myDrawing);
         player = new Player(this.getApplicationContext());
-        enemies.add(new Enemy(this.getApplicationContext(), 20, height));
         p = new Paint();
 
 
@@ -124,9 +132,6 @@ public class MainActivity extends Activity implements SensorEventListener {
         return super.onTouchEvent(event);
     }
 
-
-
-
     //Every time the sensor data changes updates the speed at which x and y are moved
     public void onSensorChanged(SensorEvent event) {
 
@@ -161,7 +166,23 @@ public class MainActivity extends Activity implements SensorEventListener {
             super(context);
         }
 
-        public void onDraw(Canvas canvas) {
+        public void onDraw(Canvas canvas)
+        {
+            //Draw Black Background
+            canvas.drawColor(Color.BLACK);
+            //Draw Gray Bar at the bottom of the screen
+            p.setColor(Color.GRAY);
+            canvas.drawRect(0,height-100, width, height, p);
+            //Draw score text
+            p.setColor(Color.RED);
+            p.setTextSize(60);
+            canvas.drawText("Score: " + player.getScore(), width - 300, height - 50, p);
+            //Draw life count
+            for(int i = 0; i < player.getLives(); i++)
+            {
+                canvas.drawBitmap(heart.getImage(), i*heart.getWidth() + heart.getWidth(), height - heart.getHeight(), p);
+            }
+
             shootingFrames++;
             if (shootingFrames > 30 && !player.getShield()) {
                 player.shoot(projectiles);
@@ -169,8 +190,17 @@ public class MainActivity extends Activity implements SensorEventListener {
             }
             //Spawn enemies at a random but steady pace
             enemySpawnFrames++;
-            if (enemySpawnFrames > new Random().nextInt(100) + 50) {
-                Enemy e1 = new Enemy(getContext(), new Random().nextInt(width - 328), -20);
+            if (enemySpawnFrames > enemySpawnRate)
+            {
+                Enemy e1;
+                if(new Random().nextInt(5) == 1) //One out of every 5 enemies will be a torpedo
+                {
+                    e1 = new Enemy(getContext(), new Random().nextInt(width - 328), -20, "torpedo");
+                }
+                else
+                {
+                    e1 = new Enemy(getContext(), new Random().nextInt(width - 328), -20, "orb");
+                }
                 enemies.add(e1);
                 for (int i = 0; i < enemies.size() - 1; i++) {
                     if (e1.intersects(enemies.get(i))) {
@@ -178,6 +208,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                         break;
                     } else {
                         enemySpawnFrames = 0;
+                        enemySpawnRate = new Random().nextInt(100) + 50;
                     }
                 }
             }
@@ -187,14 +218,51 @@ public class MainActivity extends Activity implements SensorEventListener {
                 x = width / 2;
             }
             //Loop through all Enemies and do all checks and balances
-            for (int i = 0; i < enemies.size(); i++) {
+            for (int i = 0; i < enemies.size(); i++)
+            {
                 canvas.drawBitmap(enemies.get(i).getImage(), enemies.get(i).getX(), enemies.get(i).getY(), p);
                 enemies.get(i).move("y", 5);
                 enemies.get(i).shoot(projectiles);
-                if (enemies.get(i).getY() > height + enemies.get(i).getHeight()) {
+                if(enemies.get(i).getY() > height + enemies.get(i).getHeight())
+                {
                     enemies.remove(i);
                     break;
                 }
+                if(enemies.get(i).intersects(player))
+                {
+                    if(player.getShield())
+                    {
+                        enemies.remove(i);
+                        break;
+                    }
+                    else
+                    {
+                        enemies.remove(i);
+                        player.setLives(player.getLives()-1);
+                        break;
+                    }
+                }
+            }
+            //Loop through all Upgrades
+            for(int i = 0; i < upgrades.size(); i++)
+            {
+                if(upgrades.get(i) == null)
+                {
+                    break;
+                }
+                canvas.drawBitmap(upgrades.get(i).getImage(), upgrades.get(i).getX(), upgrades.get(i).getY(), p);
+                if(upgrades.get(i).intersects(player))
+                {
+                    player.setMissileUpgrade(true);
+                    upgrades.remove(i);
+                    break;
+                }
+                if(upgrades.get(i).getY() > height + upgrades.get(i).getHeight())
+                {
+                    upgrades.remove(i);
+                    break;
+                }
+                upgrades.get(i).move("y", 20);
             }
             //Loop through all Projectiles and do all checks and balances
             for (int i = 0; i < projectiles.size(); i++) {
@@ -202,7 +270,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                     break;
                 }
                 canvas.drawBitmap(projectiles.get(i).getImage(), projectiles.get(i).getX(), projectiles.get(i).getY(), p);
-                if (projectiles.get(i).getY() > height + projectiles.get(i).getHeight() || projectiles.get(i).getY() > height + projectiles.get(i).getHeight()) {
+                if (projectiles.get(i).getY() > height + projectiles.get(i).getHeight()) {
                     projectiles.remove(i);
                     break;
                 }
@@ -213,13 +281,18 @@ public class MainActivity extends Activity implements SensorEventListener {
                             break;
                         }
                         if (projectiles.get(i).intersects(enemies.get(j))) {
-                            projectiles.remove(i);
-                            enemies.get(j).setHealth(enemies.get(j).getHealth() - 1);
+                            enemies.get(j).setHealth(enemies.get(j).getHealth() - projectiles.get(i).getDamage());
                             if (enemies.get(j).getHealth() <= 0) {
+                                if(new Random().nextInt(5) == 1)
+                                {
+                                    Sprite newUpgrade = new Sprite(getContext(), enemies.get(j).getX(), enemies.get(j).getY());
+                                    newUpgrade.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bulletupgrade), 45, 45, false));
+                                    upgrades.add(newUpgrade);
+                                }
                                 enemies.remove(j);
                                 player.setScore(player.getScore() + 100);
-                                break;
                             }
+                            projectiles.remove(i);
                             break;
                         }
                     }
@@ -230,7 +303,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                             projectiles.remove(i);
                             break;
                         } else {
-                            player.setLives(player.getLives() - 1);
+                            player.setLives(player.getLives() - projectiles.get(i).getDamage());
                             if (player.getLives() < 1) {
                                 gameOver();
                                 break;
@@ -241,11 +314,11 @@ public class MainActivity extends Activity implements SensorEventListener {
                     }
                 }
             }
-            canvas.drawBitmap(player.getImage(), (-x + width), height - player.getHeight(), p);
+            canvas.drawBitmap(player.getImage(), (-x + width), height - player.getHeight() - 100, p);
+            player.setLocation(-x + width, height - player.getHeight() - 100);
             if (player.getShield()) {
-                canvas.drawBitmap(shieldImg, player.getX() + shieldImg.getWidth() / 12, player.getY() - shieldImg.getHeight() / 2, p);
+                canvas.drawBitmap(shield.getImage(), player.getX() + shield.getWidth() / 12, player.getY() - shield.getHeight() / 2, p);
             }
-            player.setLocation(-x + width, height - player.getHeight());
 
             //draw a circle at the point designated based on accelerometer data and previous points with a specified size and a color P
             //canvas.drawCircle(x, y, size, p);
