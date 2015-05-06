@@ -167,18 +167,6 @@ public class MainActivity extends Activity implements SensorEventListener {
         public void onDraw(Canvas canvas) {
             //Draw Black Background
             canvas.drawColor(Color.BLACK);
-            //Draw Gray Bar at the bottom of the screen
-            p.setColor(Color.GRAY);
-            canvas.drawRect(0, height - 100, width, height, p);
-            //Draw score text
-            p.setColor(Color.RED);
-            p.setTextSize(60);
-            canvas.drawText("Score: " + player.getScore(), width - 300, height - 50, p);
-            //Draw life count
-            for (int i = 0; i < player.getLives(); i++) {
-                canvas.drawBitmap(heart.getImage(), i * heart.getWidth() + heart.getWidth(), height - heart.getHeight(), p);
-            }
-
             shootingFrames++;
             if (shootingFrames > 30 && !player.getShield()) {
                 player.shoot(projectiles);
@@ -300,6 +288,17 @@ public class MainActivity extends Activity implements SensorEventListener {
             player.setLocation(-x + width, height - player.getHeight() - 100);
             if (player.getShield()) {
                 canvas.drawBitmap(shield.getImage(), player.getX() + shield.getWidth() / 12, player.getY() - shield.getHeight() / 2, p);
+            }
+            //Draw Gray Bar at the bottom of the screen
+            p.setColor(Color.GRAY);
+            canvas.drawRect(0, height - 100, width, height, p);
+            //Draw score text
+            p.setColor(Color.RED);
+            p.setTextSize(60);
+            canvas.drawText("Score: " + player.getScore(), width - 300, height - 50, p);
+            //Draw life count
+            for (int i = 0; i < player.getLives(); i++) {
+                canvas.drawBitmap(heart.getImage(), i * heart.getWidth() + heart.getWidth(), height - heart.getHeight(), p);
             }
 
             //draw a circle at the point designated based on accelerometer data and previous points with a specified size and a color P
