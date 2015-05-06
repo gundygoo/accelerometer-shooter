@@ -78,10 +78,10 @@ public class Leaderboard extends Activity implements View.OnClickListener {
             }
             editTexts.get(j).setBackgroundResource(R.drawable.leaderboardlistitem);
             editTexts.get(j).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            editTexts.get(j).getLayoutParams().height = width/10;
+            editTexts.get(j).getLayoutParams().height = width/15;
             editTexts.get(j).setPadding(10, -5, 10, -5);
             editTexts.get(j).setTextColor(getResources().getColor(R.color.green));
-            editTexts.get(j).setTextSize(height/50);
+            editTexts.get(j).setTextSize(width/30);
             linearLayout.addView(editTexts.get(j));
             Log.d("Test String", (scoreNum) + "." + scores.get(j).getPlayerName() + scores.get(j).getStringScore());
            // Log.d("Test String", scores[j].getPlayerName());
