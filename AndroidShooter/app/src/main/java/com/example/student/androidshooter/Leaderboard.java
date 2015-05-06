@@ -76,15 +76,12 @@ public class Leaderboard extends Activity implements View.OnClickListener {
             {
                 editTexts.get(j).setText((scoreNum) + ".   " + scores.get(j).getPlayerName() + "     " + scores.get(j).getStringScore());
             }
-            editTexts.get(j).setBackgroundResource(R.drawable.leaderboardlistitem);
             editTexts.get(j).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            editTexts.get(j).getLayoutParams().height = height/15;
-            editTexts.get(j).setPadding(10, -5, 10, -5);
+            editTexts.get(j).setPadding(10, -5, 10, 10);
             editTexts.get(j).setTextColor(getResources().getColor(R.color.green));
-            editTexts.get(j).setTextSize(height/60);
+            editTexts.get(j).setTextSize(20);
             linearLayout.addView(editTexts.get(j));
             Log.d("Test String", (scoreNum) + "." + scores.get(j).getPlayerName() + scores.get(j).getStringScore());
-           // Log.d("Test String", scores[j].getPlayerName());
         }
         try {
             FileOutputStream fos = openFileOutput("leaderboard", Context.MODE_PRIVATE);
@@ -98,7 +95,6 @@ public class Leaderboard extends Activity implements View.OnClickListener {
         catch (Exception e)
         {
         }
-        //finish();
     }
 
     public class Score{
