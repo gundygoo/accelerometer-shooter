@@ -3,9 +3,11 @@ package com.example.student.androidshooter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +31,11 @@ public class Leaderboard extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.leaderboard);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
         String score= "";
         mainMenu = (ImageButton) findViewById(R.id.mainmenu);
         mainMenu.setOnClickListener(this);
@@ -71,9 +78,10 @@ public class Leaderboard extends Activity implements View.OnClickListener {
             }
             editTexts.get(j).setBackgroundResource(R.drawable.leaderboardlistitem);
             editTexts.get(j).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            editTexts.get(j).getLayoutParams().height = 60;
+            editTexts.get(j).getLayoutParams().height = width/15;
             editTexts.get(j).setPadding(10, -5, 10, -5);
             editTexts.get(j).setTextColor(getResources().getColor(R.color.green));
+            editTexts.get(j).setTextSize(width/30);
             linearLayout.addView(editTexts.get(j));
             Log.d("Test String", (scoreNum) + "." + scores.get(j).getPlayerName() + scores.get(j).getStringScore());
            // Log.d("Test String", scores[j].getPlayerName());
