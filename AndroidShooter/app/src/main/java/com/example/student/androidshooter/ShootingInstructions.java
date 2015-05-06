@@ -100,7 +100,7 @@ public class ShootingInstructions extends View implements SensorEventListener
         canvas.drawBitmap(player.getImage(), (-x+width), height-player.getHeight(), p);
         if(player.getShield())
         {
-            canvas.drawBitmap(shieldImg, player.getX()+shieldImg.getWidth()/12, player.getY()-shieldImg.getHeight()/2, p);
+            canvas.drawBitmap(shieldImg, player.getX()-25, player.getY()-shieldImg.getHeight()/2, p);
         }
         player.setLocation(-x+width,height-player.getHeight());
 

@@ -66,7 +66,7 @@ public class MovementInstructions extends View implements SensorEventListener
             x = width/2;
             Log.i("Arrived", String.valueOf(x));
         }
-        canvas.drawBitmap(player, (-x+width), height-playerP.getHeight(), p);
+        canvas.drawBitmap(playerP.getImage(), (-x+width), height-playerP.getHeight(), p);
         x= (float) (xPos*2 + x);
         if(leftCollision(x))
         {

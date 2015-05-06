@@ -68,8 +68,6 @@ public class MainActivity extends Activity implements SensorEventListener {
     private int enemySpawnFrames = 0;
     private int enemySpawnRate = 50;
     private Bitmap shieldImg;
-    int clickCount = 0;
-    long startTime;
     GestureDetector gestureDetector;
 
 
@@ -166,21 +164,19 @@ public class MainActivity extends Activity implements SensorEventListener {
             super(context);
         }
 
-        public void onDraw(Canvas canvas)
-        {
+        public void onDraw(Canvas canvas) {
             //Draw Black Background
             canvas.drawColor(Color.BLACK);
             //Draw Gray Bar at the bottom of the screen
             p.setColor(Color.GRAY);
-            canvas.drawRect(0,height-100, width, height, p);
+            canvas.drawRect(0, height - 100, width, height, p);
             //Draw score text
             p.setColor(Color.RED);
             p.setTextSize(60);
             canvas.drawText("Score: " + player.getScore(), width - 300, height - 50, p);
             //Draw life count
-            for(int i = 0; i < player.getLives(); i++)
-            {
-                canvas.drawBitmap(heart.getImage(), i*heart.getWidth() + heart.getWidth(), height - heart.getHeight(), p);
+            for (int i = 0; i < player.getLives(); i++) {
+                canvas.drawBitmap(heart.getImage(), i * heart.getWidth() + heart.getWidth(), height - heart.getHeight(), p);
             }
 
             shootingFrames++;
@@ -190,15 +186,12 @@ public class MainActivity extends Activity implements SensorEventListener {
             }
             //Spawn enemies at a random but steady pace
             enemySpawnFrames++;
-            if (enemySpawnFrames > enemySpawnRate)
-            {
+            if (enemySpawnFrames > enemySpawnRate) {
                 Enemy e1;
-                if(new Random().nextInt(5) == 1) //One out of every 5 enemies will be a torpedo
+                if (new Random().nextInt(5) == 1) //One out of every 5 enemies will be a torpedo
                 {
                     e1 = new Enemy(getContext(), new Random().nextInt(width - 328), -20, "torpedo");
-                }
-                else
-                {
+                } else {
                     e1 = new Enemy(getContext(), new Random().nextInt(width - 328), -20, "orb");
                 }
                 enemies.add(e1);
@@ -218,47 +211,37 @@ public class MainActivity extends Activity implements SensorEventListener {
                 x = width / 2;
             }
             //Loop through all Enemies and do all checks and balances
-            for (int i = 0; i < enemies.size(); i++)
-            {
+            for (int i = 0; i < enemies.size(); i++) {
                 canvas.drawBitmap(enemies.get(i).getImage(), enemies.get(i).getX(), enemies.get(i).getY(), p);
                 enemies.get(i).move("y", 5);
                 enemies.get(i).shoot(projectiles);
-                if(enemies.get(i).getY() > height + enemies.get(i).getHeight())
-                {
+                if (enemies.get(i).getY() > height + enemies.get(i).getHeight()) {
                     enemies.remove(i);
                     break;
                 }
-                if(enemies.get(i).intersects(player))
-                {
-                    if(player.getShield())
-                    {
+                if (enemies.get(i).intersects(player)) {
+                    if (player.getShield()) {
                         enemies.remove(i);
                         break;
-                    }
-                    else
-                    {
+                    } else {
                         enemies.remove(i);
-                        player.setLives(player.getLives()-1);
+                        player.setLives(player.getLives() - 1);
                         break;
                     }
                 }
             }
             //Loop through all Upgrades
-            for(int i = 0; i < upgrades.size(); i++)
-            {
-                if(upgrades.get(i) == null)
-                {
+            for (int i = 0; i < upgrades.size(); i++) {
+                if (upgrades.get(i) == null) {
                     break;
                 }
                 canvas.drawBitmap(upgrades.get(i).getImage(), upgrades.get(i).getX(), upgrades.get(i).getY(), p);
-                if(upgrades.get(i).intersects(player))
-                {
+                if (upgrades.get(i).intersects(player)) {
                     player.setMissileUpgrade(true);
                     upgrades.remove(i);
                     break;
                 }
-                if(upgrades.get(i).getY() > height + upgrades.get(i).getHeight())
-                {
+                if (upgrades.get(i).getY() > height + upgrades.get(i).getHeight()) {
                     upgrades.remove(i);
                     break;
                 }
@@ -283,8 +266,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                         if (projectiles.get(i).intersects(enemies.get(j))) {
                             enemies.get(j).setHealth(enemies.get(j).getHealth() - projectiles.get(i).getDamage());
                             if (enemies.get(j).getHealth() <= 0) {
-                                if(new Random().nextInt(5) == 1)
-                                {
+                                if (new Random().nextInt(5) == 1) {
                                     Sprite newUpgrade = new Sprite(getContext(), enemies.get(j).getX(), enemies.get(j).getY());
                                     newUpgrade.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bulletupgrade), 45, 45, false));
                                     upgrades.add(newUpgrade);
@@ -347,11 +329,6 @@ public class MainActivity extends Activity implements SensorEventListener {
                 y = height - player.getHeight();
             }
 
-            /*if (onTouch())
-            {
-
-            }*/
-
             invalidate();
         }
     }
@@ -359,20 +336,17 @@ public class MainActivity extends Activity implements SensorEventListener {
     private void gameOver() {
         enemies.clear();
         projectiles.clear();
-        String playersScore="";
-        if(player.getScore()==0)
-        {
+        String playersScore = "";
+        if (player.getScore() == 0) {
             playersScore = "0";
-        }
-        else
-        {
+        } else {
             playersScore = player.getScore() + "";
         }
 
         player.setScore(0);
         player.setLives(5);
         Intent intent = new Intent(getApplicationContext(), GameOver.class);
-        Log.d("???",playersScore);
+        Log.d("???", playersScore);
         intent.putExtra("Score", playersScore);
         startActivityForResult(intent, 0);
         finish();
@@ -414,7 +388,4 @@ public class MainActivity extends Activity implements SensorEventListener {
             return false;
         }
     }
-
-    //code to register a double tap on the device screen to bring up pause menu
-
 }
