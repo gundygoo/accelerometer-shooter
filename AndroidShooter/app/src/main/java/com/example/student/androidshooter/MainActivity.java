@@ -295,7 +295,7 @@ public class MainActivity extends Activity implements SensorEventListener {
             //Draw score text
             p.setColor(Color.RED);
             p.setTextSize(60);
-            canvas.drawText("Score: " + player.getScore(), width - 300, height - 50, p);
+            canvas.drawText("Score: " + player.getScore(), width - 400, height - 50, p);
             //Draw life count
             for (int i = 0; i < player.getLives(); i++) {
                 canvas.drawBitmap(heart.getImage(), i * heart.getWidth() + heart.getWidth(), height - heart.getHeight(), p);

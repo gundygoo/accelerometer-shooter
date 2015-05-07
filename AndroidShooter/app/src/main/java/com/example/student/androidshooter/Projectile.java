@@ -20,22 +20,22 @@ public class Projectile extends Sprite {
         this.context = context;
         if(name == "bullet")
         {
-            super.setImage(BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet));
+            super.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet), 10, 42, false));
             damage = 1;
         }
         if(name == "photon")
         {
-            super.setImage(BitmapFactory.decodeResource(context.getResources(), R.drawable.photon));
+            super.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.photon), 26, 26, false));
             damage = 1;
         }
         if(name == "missile")
         {
-            super.setImage(BitmapFactory.decodeResource(context.getResources(), R.drawable.missile));
+            super.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.missile), 42, 50, false));
             damage = 2;
         }
         if(name == "player missile")
         {
-            super.setImage(BitmapFactory.decodeResource(context.getResources(), R.drawable.playermissile));
+            super.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.playermissile), 42, 50, false));
             damage = 2;
         }
         this.hitEnemy = hitEnemy;
