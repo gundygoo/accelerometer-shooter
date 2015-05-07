@@ -20,8 +20,7 @@ public class Projectile extends Sprite {
         this.context = context;
         if(name == "bullet")
         {
-            Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet);
-            super.setImage(Bitmap.createScaledBitmap(b, 10, 42, false));
+            super.setImage(BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet));
             damage = 1;
         }
         if(name == "photon")

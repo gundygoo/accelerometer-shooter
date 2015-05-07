@@ -99,8 +99,6 @@ public class Background extends View
         {
             y=y+radius;
         }
-
-
     }
     //Retreive a random number between two numbers
     private static int randInt(int min, int max) {
