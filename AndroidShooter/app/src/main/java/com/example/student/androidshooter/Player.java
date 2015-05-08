@@ -24,8 +24,7 @@ public class Player extends Sprite{
         super(context, 0, 0);
         this.context = context;
         //THE LINE OF CODE BELOW IS FIXED!!!!!!!!!!!
-        Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
-        super.setImage(Bitmap.createScaledBitmap(b, 106, 130, false));
+        super.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.player), 106, 130, false));
         lives = 5;
         score = 0;
         health = 3;

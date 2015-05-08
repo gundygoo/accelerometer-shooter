@@ -83,7 +83,7 @@ public class Sprite {
 
     protected void setImage(Bitmap newImage)
     {
-        this.image = Bitmap.createScaledBitmap(newImage, newImage.getWidth()*scaleMultiplier, newImage.getHeight()*scaleMultiplier, false);
+        this.image = newImage;
         width = image.getWidth();
         height = image.getHeight();
     }

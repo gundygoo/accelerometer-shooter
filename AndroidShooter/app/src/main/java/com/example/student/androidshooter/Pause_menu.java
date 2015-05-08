@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 /**
  * Created by student on 5/1/2015.
@@ -18,6 +20,10 @@ public class Pause_menu extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pause_menu);
         Log.d("Main Menu", "Activity Started");
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override

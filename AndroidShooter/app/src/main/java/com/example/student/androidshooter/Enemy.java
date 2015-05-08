@@ -26,16 +26,14 @@ public class Enemy extends Sprite {
         this.context = context;
         if(name == "orb")
         {
-            Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy1);
-            super.setImage(Bitmap.createScaledBitmap(b, 80, 80, false));
+            super.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy1), 80, 80, false));
             this.name = name;
             health = 3;
             ammoType = "photon";
         }
         if(name == "torpedo")
         {
-            Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy2);
-            super.setImage(Bitmap.createScaledBitmap(b, 78, 95, false));
+            super.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy2), 78, 95, false));
             this.name = name;
             health = 1;
             ammoType = "missile";
