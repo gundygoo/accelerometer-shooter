@@ -79,7 +79,6 @@ public class Leaderboard extends Activity implements View.OnClickListener {
             editTexts.get(j).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             editTexts.get(j).setPadding(10, -5, 10, 10);
             editTexts.get(j).setTextColor(getResources().getColor(R.color.green));
-            editTexts.get(j).setTextSize(20 );
             editTexts.get(j).setTextSize(20);
             linearLayout.addView(editTexts.get(j));
             Log.d("Test String", (scoreNum) + "." + scores.get(j).getPlayerName() + scores.get(j).getStringScore());
