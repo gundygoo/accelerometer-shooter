@@ -34,7 +34,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="200dp"
+            android:layout_width="276dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:id="@+id/scoresList">
