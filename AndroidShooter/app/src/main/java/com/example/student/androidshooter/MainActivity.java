@@ -246,7 +246,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                     break;
                 }
                 if (projectiles.get(i).hitEnemy()) {
-                    projectiles.get(i).move("y", -20);
+                    projectiles.get(i).move("y", -12);
                     for (int j = 0; j < enemies.size(); j++) {
                         if (enemies.get(j) == null) {
                             break;
@@ -267,7 +267,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                         }
                     }
                 } else {
-                    projectiles.get(i).move("y", 20);
+                    projectiles.get(i).move("y", 12);
                     if (projectiles.get(i).intersects(player)) {
                         if (player.getShield()) {
                             projectiles.remove(i);
